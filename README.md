@@ -1,1 +1,11 @@
-# VRFSCam-
+# VRFSCam+
+
+
+VRFSCam+ is a Unity mod designed to enhance the camera functionality in VRFS Camera. Built using MelonLoader, this mod introduces dynamic field-of-view (FOV) adjustments and customizable zoom controls to improve the user experience for both game streamers and debugging.
+
+# Controls:
+ - B Key: Zoom in
+
+ - V Key: Zoom out
+
+ - R Key: Reset FOV to default
