@@ -16,7 +16,7 @@ using UnityEngine.SceneManagement;
 using Il2CppSteamworks;
 
 
-[assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.2", "seby", null)]
+[assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.3", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
 
 namespace VRFSCam
