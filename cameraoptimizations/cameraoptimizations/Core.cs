@@ -668,23 +668,7 @@ namespace VRFSCam
             }
         }
 
-        [HarmonyPatch(typeof(PhotonConnector), "CreateRoomWithParameters")]
-        public static class PhotonConnectorPatch
-        {
-            [HarmonyPrefix]
-            static void Prefix(ref byte maxPlayers, ref int arenaID, ref int isItLobby, ref int pinCode, ref int isRankRoom, [System.Runtime.InteropServices.Optional] ref IncentiveMatchPreset incentiveMatchPreset)
-            {
-                try
-                {
-                    pinCode = 123456;
-                    maxPlayers = 200;
-                }
-                catch (Exception ex)
-                {
-                    MelonLogger.Warning($"Error in PhotonConnectorPatch: {ex.Message}");
-                }
-            }
-        }
+        // PhotonConnectorPatch removed - cannot force code in camera
         #endregion
     }
 }
