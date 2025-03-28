@@ -37,12 +37,12 @@ namespace VRFSCam
         private float _minFOV = 1f;
         private float _maxFOV = 120f;
         private float _baseFOV = 60f;
-        
+
         // Camera Positioning
         private Vector3 _positionBeforeMainMode;
         private Quaternion _rotationBeforeMainMode;
         private bool _cameraPositionSet = false;
-        
+
         // Ball Following
         private GameObject _ball;
         private Vector3 _currentOffset;
@@ -51,20 +51,21 @@ namespace VRFSCam
         private float _rotationSpeed = 5f;
         private float _baseOffsetDistance = 5f;
         private float _offsetHeight = 2f;
-        
+
         // UI Elements
         private GameObject _canvasObject;
         private GameObject _textObject;
-        
+
         // Discord RPC
         private DiscordRpcClient _client;
         private bool _discordAvailable = false;
-        
+
         // Harmony
         private HarmonyLib.Harmony _harmony;
 
         // Error tracking to prevent log spam
         private bool _ballLayerWarningShown = false;
+        private bool _discordAssemblyErrorLogged = false; // Flag to track if assembly load error was logged
         #endregion
 
         #region Public Properties
@@ -78,7 +79,7 @@ namespace VRFSCam
         public static int RedScore { get; private set; }
         public static float RemainingMatchTime { get; private set; }
         public static Keyboard Keyboard { get; private set; }
-        
+
         public float ZoomFactor => _zoomFactorPreference?.Value ?? 0.9f;
         public float MaxZoomDistance => _maxZoomDistancePreference?.Value ?? 110f;
         #endregion
@@ -93,17 +94,30 @@ namespace VRFSCam
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg($"VRFSCam+ {Version} by Seby");
-            
+
             try
             {
                 InitializeDiscordRPC();
             }
+            catch (System.IO.FileNotFoundException fnfEx) when (fnfEx.FileName != null && fnfEx.FileName.Contains("DiscordRPC"))
+            {
+                // Catch specific assembly load error during initial call if InitializeDiscordRPC fails immediately
+                LogDiscordAssemblyErrorOnce($"Discord assembly not found during initial setup: {fnfEx.Message}");
+                SafelyDisposeDiscordClient();
+            }
+            catch (System.IO.FileLoadException flEx) when (flEx.FileName != null && flEx.FileName.Contains("DiscordRPC"))
+            {
+                LogDiscordAssemblyErrorOnce($"Failed to load Discord assembly during initial setup: {flEx.Message}");
+                SafelyDisposeDiscordClient();
+            }
             catch (Exception ex)
             {
+                // Catch any other general initialization errors
                 LoggerInstance.Warning($"Discord RPC initialization failed: {ex.Message}. Rich presence will be disabled.");
                 _discordAvailable = false;
+                SafelyDisposeDiscordClient();
             }
-            
+
             try
             {
                 InitializeHarmony();
@@ -112,7 +126,7 @@ namespace VRFSCam
             {
                 LoggerInstance.Error($"Failed to initialize Harmony patches: {ex.Message}");
             }
-            
+
             InitializePreferences();
         }
 
@@ -125,7 +139,7 @@ namespace VRFSCam
                 {
                     LoggerInstance.Warning("Keyboard input not available. Some features may not work correctly.");
                 }
-                
+
                 _currentOffset = new Vector3(0, _offsetHeight, -_baseOffsetDistance);
             }
             catch (Exception ex)
@@ -139,14 +153,14 @@ namespace VRFSCam
             try
             {
                 // Check if the Discord DLL is available before trying to use it
-                var discordAssembly = System.Reflection.Assembly.Load("DiscordRPC");
+                var discordAssembly = System.Reflection.Assembly.Load("DiscordRPC"); // This might throw
                 if (discordAssembly == null)
                 {
-                    LoggerInstance.Warning("Discord RPC assembly could not be loaded. Rich presence will be disabled.");
-                    _discordAvailable = false;
+                    // This path might not be reachable if Load throws, but kept for safety
+                    LogDiscordAssemblyErrorOnce("Discord RPC assembly could not be loaded (Load returned null). Rich presence will be disabled.");
                     return;
                 }
-                
+
                 _client = new DiscordRpcClient(DiscordAppId);
                 _client.Logger = new ConsoleLogger() { Level = LogLevel.Warning };
 
@@ -157,8 +171,13 @@ namespace VRFSCam
 
                 _client.OnConnectionFailed += (sender, e) =>
                 {
-                    LoggerInstance.Warning("Discord connection failed. Rich presence will be disabled.");
-                    _discordAvailable = false;
+                    // Handle connection failure, distinct from assembly load failure
+                    if (_discordAvailable)
+                    {
+                        LoggerInstance.Warning("Discord connection failed. Rich presence will be disabled.");
+                        _discordAvailable = false;
+                        SafelyDisposeDiscordClient();
+                    }
                 };
 
                 // Set a connection timeout
@@ -169,39 +188,50 @@ namespace VRFSCam
                         initialized = true;
                     }
                     catch (Exception ex) {
-                        LoggerInstance.Warning($"Discord RPC initialization failed in thread: {ex.Message}");
-                        _discordAvailable = false;
+                        // Catch errors during async initialization
+                        if (_discordAvailable) // Check flag to avoid duplicate logs if assembly load failed earlier
+                        {
+                            LoggerInstance.Warning($"Discord RPC initialization failed in thread: {ex.Message}");
+                            _discordAvailable = false;
+                            SafelyDisposeDiscordClient();
+                        }
                     }
                 });
-                
+
                 // Wait for a short time, but don't block indefinitely
                 System.Threading.Thread.Sleep(100);
-                
-                if (!initialized)
+
+                if (!initialized && _discordAvailable) // Only log timeout if not already disabled
                 {
                     LoggerInstance.Warning("Discord RPC initialization timed out. Rich presence will be disabled.");
                     _discordAvailable = false;
+                    SafelyDisposeDiscordClient();
                     return;
                 }
-                
-                _discordAvailable = true;
-                UpdateRichPresence("Singleplayer", "VRFSCam+");
-            }
-            catch (Exception ex)
-            {
-                LoggerInstance.Warning($"Discord RPC initialization failed: {ex.Message}. Rich presence will be disabled.");
-                _discordAvailable = false;
-                
-                // Safely dispose of client if it was created but failed to initialize
-                try
-                {
-                    if (_client != null)
-                    {
-                        _client.Dispose();
-                        _client = null;
-                    }
+
+                if (initialized) {
+                    _discordAvailable = true; // Mark as available only if successfully initialized
+                    UpdateRichPresence("Singleplayer", "VRFSCam+");
                 }
-                catch { }
+            }
+            catch (System.IO.FileNotFoundException fnfEx) when (fnfEx.FileName != null && fnfEx.FileName.Contains("DiscordRPC"))
+            {
+                LogDiscordAssemblyErrorOnce($"Discord assembly not found during initialization: {fnfEx.Message}");
+                SafelyDisposeDiscordClient();
+            }
+            catch (System.IO.FileLoadException flEx) when (flEx.FileName != null && flEx.FileName.Contains("DiscordRPC"))
+            {
+                LogDiscordAssemblyErrorOnce($"Failed to load Discord assembly during initialization: {flEx.Message}");
+                SafelyDisposeDiscordClient();
+            }
+            catch (Exception ex) // Catch other initialization errors
+            {
+                if (_discordAvailable) // Check flag to avoid duplicate logs
+                {
+                    LoggerInstance.Warning($"Discord RPC initialization failed: {ex.Message}. Rich presence will be disabled.");
+                    _discordAvailable = false;
+                    SafelyDisposeDiscordClient();
+                }
             }
         }
 
@@ -233,9 +263,21 @@ namespace VRFSCam
         private void UpdateRichPresence(string state, string details)
         {
             if (!_discordAvailable || _client == null) return;
-            
+
             try
             {
+                // Add extra check for client initialization status before use
+                if (!_client.IsInitialized)
+                {
+                    if (_discordAvailable) // Log only once if it becomes uninitialized
+                    {
+                        LoggerInstance.Warning("Discord client no longer initialized during update. Disabling rich presence.");
+                        _discordAvailable = false;
+                        SafelyDisposeDiscordClient();
+                    }
+                    return;
+                }
+
                 _client.SetPresence(new RichPresence()
                 {
                     Details = details,
@@ -254,23 +296,27 @@ namespace VRFSCam
                 {
                     LoggerInstance.Warning($"Failed to update Discord rich presence: {ex.Message}");
                     _discordAvailable = false;
+                    SafelyDisposeDiscordClient(); // Dispose on failure
                 }
             }
         }
 
         public override void OnApplicationQuit()
         {
-            try
+            // Check flag before attempting disposal
+            if (_discordAvailable && _client != null)
             {
-                if (_discordAvailable && _client != null)
+                try
                 {
                     _client.Dispose();
                 }
+                catch (Exception ex)
+                {
+                    LoggerInstance.Warning($"Error during Discord client disposal: {ex.Message}");
+                }
             }
-            catch (Exception ex)
-            {
-                LoggerInstance.Warning($"Error during Discord client disposal: {ex.Message}");
-            }
+            _client = null; // Ensure client is null after disposal attempt
+            _discordAvailable = false; // Mark as unavailable on quit
         }
         #endregion
 
@@ -304,9 +350,9 @@ namespace VRFSCam
                     _canvasObject.AddComponent<GraphicRaycaster>();
                 }
 
-                if (_textObject != null) 
+                if (_textObject != null)
                     GameObject.Destroy(_textObject);
-                    
+
                 _textObject = new GameObject("SebyText");
                 TextMeshPro = _textObject.AddComponent<TextMeshProUGUI>();
                 TextMeshPro.text = "VRFSCam+";
@@ -314,7 +360,7 @@ namespace VRFSCam
                 TextMeshPro.color = new Color(1f, 1f, 1f, 0.2f);
                 TextMeshPro.alignment = TextAlignmentOptions.BottomLeft;
                 _textObject.transform.SetParent(_canvasObject.transform, false);
-                
+
                 RectTransform rectTransform = TextMeshPro.rectTransform;
                 rectTransform.anchorMin = Vector2.zero;
                 rectTransform.anchorMax = Vector2.zero;
@@ -428,17 +474,41 @@ namespace VRFSCam
                     }
                 }
 
-                if (_mainCamera == null || Keyboard == null) 
+                if (_mainCamera == null || Keyboard == null)
                     return;
 
                 HandleCameraControls();
                 HandleMainModeToggle();
-                UpdateDiscordStatus();
+
+                // Only attempt Discord update if it's available
+                if (_discordAvailable)
+                {
+                    UpdateDiscordStatus();
+                }
+
                 HandleBallTracking();
+            }
+            catch (System.IO.FileNotFoundException fnfEx) when (fnfEx.FileName != null && fnfEx.FileName.Contains("DiscordRPC"))
+            {
+                // Catch Discord assembly load error specifically
+                LogDiscordAssemblyErrorOnce($"Discord assembly not found in update loop, disabling Discord features: {fnfEx.Message}");
+                SafelyDisposeDiscordClient();
+                // Suppress further logging for this specific error
+            }
+            catch (System.IO.FileLoadException flEx) when (flEx.FileName != null && flEx.FileName.Contains("DiscordRPC"))
+            {
+                // Catch Discord assembly load error specifically
+                LogDiscordAssemblyErrorOnce($"Failed to load Discord assembly in update loop, disabling Discord features: {flEx.Message}");
+                SafelyDisposeDiscordClient();
+                // Suppress further logging for this specific error
             }
             catch (Exception ex)
             {
-                LoggerInstance.Error($"Error in main update loop: {ex.Message}");
+                // Log other, non-Discord-assembly related errors from the update loop normally
+                // Avoid logging if it's a consequence of Discord being unavailable and already handled
+                if (_discordAvailable || !_discordAssemblyErrorLogged) {
+                    LoggerInstance.Error($"Error in main update loop: {ex.Message}");
+                }
             }
         }
 
@@ -505,24 +575,28 @@ namespace VRFSCam
         {
             // Early return if Discord is not available or client is null
             if (!_discordAvailable || _client == null) return;
-            
+
             try
             {
-                // Verify client is still valid
+                // Verify client is still valid before using it
                 if (!_client.IsInitialized)
                 {
-                    LoggerInstance.Warning("Discord client is no longer initialized. Disabling rich presence.");
-                    _discordAvailable = false;
+                    if (_discordAvailable) // Only log the warning once
+                    {
+                        LoggerInstance.Warning("Discord client is no longer initialized. Disabling rich presence.");
+                        _discordAvailable = false;
+                        SafelyDisposeDiscordClient(); // Dispose if it became uninitialized unexpectedly
+                    }
                     return;
                 }
-                
+
                 if (PhotonNetwork.IsConnected)
                 {
                     GetScores();
                     int playerCount = PhotonNetwork.CurrentRoom?.PlayerCount ?? 0;
 
                     UpdateRichPresence(
-                        $"Blue: {BlueScore} | Red: {RedScore} | {playerCount} players in lobby | Time Remaining: {FormatTime(RemainingMatchTime)}", 
+                        $"Blue: {BlueScore} | Red: {RedScore} | {playerCount} players in lobby | Time Remaining: {FormatTime(RemainingMatchTime)}",
                         "In-Game | VRFSCam+ " + Version);
                 }
                 else if (SceneManager.GetActiveScene().name == "SB")
@@ -534,21 +608,27 @@ namespace VRFSCam
                     UpdateRichPresence("Connecting to server", "Version " + Version);
                 }
             }
+            // Catch specific assembly load errors that might *still* occur here in rare JIT cases
+            catch (System.IO.FileNotFoundException fnfEx) when (fnfEx.FileName != null && fnfEx.FileName.Contains("DiscordRPC"))
+            {
+                LogDiscordAssemblyErrorOnce($"Discord assembly not found during status update: {fnfEx.Message}");
+                SafelyDisposeDiscordClient();
+            }
+            catch (System.IO.FileLoadException flEx) when (flEx.FileName != null && flEx.FileName.Contains("DiscordRPC"))
+            {
+                LogDiscordAssemblyErrorOnce($"Failed to load Discord assembly during status update: {flEx.Message}");
+                SafelyDisposeDiscordClient();
+            }
             catch (Exception ex)
             {
-                LoggerInstance.Warning($"Error updating Discord status: {ex.Message}");
-                _discordAvailable = false; // Disable to prevent further errors
-                
-                // Safely dispose of client
-                try
+                // Only log if it was supposed to be working
+                if (_discordAvailable)
                 {
-                    if (_client != null)
-                    {
-                        _client.Dispose();
-                        _client = null;
-                    }
+                    LoggerInstance.Warning($"Error updating Discord status: {ex.Message}");
+                    _discordAvailable = false; // Disable on update failure
+                    SafelyDisposeDiscordClient(); // Dispose on failure
                 }
-                catch { }
+                // If !_discordAvailable, suppress repeated update errors
             }
         }
 
@@ -669,6 +749,46 @@ namespace VRFSCam
         }
 
         // PhotonConnectorPatch removed - cannot force code in camera
+        #endregion
+
+        #region Helper Methods
+        // Helper to log assembly errors only once
+        private void LogDiscordAssemblyErrorOnce(string message)
+        {
+            if (!_discordAssemblyErrorLogged)
+            {
+                LoggerInstance.Error(message);
+                _discordAvailable = false; // Ensure Discord is marked as unavailable
+                _discordAssemblyErrorLogged = true; // Prevent further logging of this specific error
+            }
+        }
+
+        // Helper to safely dispose of the Discord client
+        private void SafelyDisposeDiscordClient()
+        {
+            try
+            {
+                if (_client != null)
+                {
+                    // Check if client implements IDisposable before calling Dispose
+                    if (_client is IDisposable disposableClient)
+                    {
+                        disposableClient.Dispose();
+                    }
+                    _client = null; // Set to null after disposal attempt
+                }
+            }
+            catch (Exception disposeEx)
+            {
+                // Log disposal error once if needed, but avoid spam
+                LoggerInstance.Warning($"Error disposing Discord client after failure: {disposeEx.Message}");
+            }
+            finally
+            {
+                _discordAvailable = false; // Ensure flag is false after disposal attempt
+                _client = null; // Ensure client reference is cleared
+            }
+        }
         #endregion
     }
 }
