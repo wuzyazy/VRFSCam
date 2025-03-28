@@ -2,11 +2,13 @@ using DiscordRPC;
 using DiscordRPC.Logging;
 using HarmonyLib;
 using Il2Cpp;
+using Il2CppHutongGames.PlayMaker.Actions;
 using Il2CppPhoton.Pun;
 using Il2CppSteamworks;
 using Il2CppTMPro;
 using MelonLoader;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -337,10 +339,40 @@ namespace VRFSCam
             }
         }
 
+        private IEnumerator LoadUI()
+        {
+            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/wbbym8.1");
+            yield return uwr.SendWebRequest();
+
+            if (uwr.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError($"failed to download AssetBundle: {uwr.error}");
+                yield break;
+            }
+
+            AssetBundle bundle = AssetBundle.LoadFromMemory(uwr.downloadHandler.data);
+            if (bundle == null)
+            {
+                Debug.LogError("failed to load assetbundle");
+                yield break;
+            }
+
+            GameObject prefab = bundle.LoadAsset<GameObject>("Zoomsettingscanvas");
+            if (prefab == null)
+            {
+                Debug.LogError("prefab not found in assetbundle");
+                yield break;
+            }
+
+            GameObject.Instantiate(prefab);
+            bundle.Unload(false);
+        }
+
         private void CreateText()
         {
             try
             {
+                MelonCoroutines.Start(LoadUI());
                 if (_canvasObject == null)
                 {
                     _canvasObject = new GameObject("SebyCanvas");
