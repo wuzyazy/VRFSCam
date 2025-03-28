@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VRFSCam")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+076c305f4a937daa2c239a0c7ff2f45e4588c30f")]
 [assembly: System.Reflection.AssemblyProductAttribute("VRFSCam")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VRFSCam")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
