@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -16,412 +16,412 @@
 
 	<ItemGroup>
 		<Reference Include="Assembly-CSharp-firstpass">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
 		</Reference>
 		<Reference Include="Assembly-CSharp">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppAVProVideo.Demos">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Demos.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Demos.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppAVProVideo.Extensions.Timeline">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Extensions.Timeline.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Extensions.Timeline.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppAVProVideo.Extensions.UnityUI">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Extensions.UnityUI.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Extensions.UnityUI.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppAVProVideo.Extensions.VisualEffectGraph">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Extensions.VisualEffectGraph.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Extensions.VisualEffectGraph.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppAVProVideo.Runtime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Runtime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Runtime.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2Cppcom.rlabrecque.steamworks.net">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2Cppcom.rlabrecque.steamworks.net.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2Cppcom.rlabrecque.steamworks.net.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppConditionalExpression">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppConditionalExpression.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppConditionalExpression.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppDOTween">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppDOTween.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppDOTween.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppIngameDebugConsole.Runtime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppIngameDebugConsole.Runtime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppIngameDebugConsole.Runtime.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppMeta.XR.Audio">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppMeta.XR.Audio.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppMeta.XR.Audio.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppMeta.XR.BuildingBlocks">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppMeta.XR.BuildingBlocks.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppMeta.XR.BuildingBlocks.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppMono.Security">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppMono.Security.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppMono.Security.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2Cppmscorlib">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppNavMeshComponents">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppNavMeshComponents.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppNavMeshComponents.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppNewtonsoft.Json">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppNewtonsoft.Json.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppNewtonsoft.Json.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppOculus.Interaction">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.Interaction.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.Interaction.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppOculus.Interaction.OVR">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.Interaction.OVR.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.Interaction.OVR.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppOculus.Platform">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.Platform.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.Platform.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppOculus.VR">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.VR.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOculus.VR.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppOPS.Obfuscator">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOPS.Obfuscator.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppOPS.Obfuscator.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhoton3Unity3D">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhoton3Unity3D.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhoton3Unity3D.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonChat">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonChat.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonChat.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonRealtime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonRealtime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonRealtime.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonUnityNetworking.Demos">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonUnityNetworking.Demos.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonUnityNetworking.Demos.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonUnityNetworking">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonUnityNetworking.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonUnityNetworking.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonUnityNetworking.Utilities">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonUnityNetworking.Utilities.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonUnityNetworking.Utilities.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonVoice.API">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonVoice.API.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonVoice.API.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonVoice">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonVoice.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonVoice.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPhotonVoice.PUN">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonVoice.PUN.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPhotonVoice.PUN.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppPlayMaker">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPlayMaker.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppPlayMaker.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppRenderHeads.AVProMovieCapture.Demos">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppRenderHeads.AVProMovieCapture.Demos.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppRenderHeads.AVProMovieCapture.Demos.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppRenderHeads.AVProMovieCapture.Runtime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppRenderHeads.AVProMovieCapture.Runtime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppRenderHeads.AVProMovieCapture.Runtime.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSirenix.OdinInspector.Attributes">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.OdinInspector.Attributes.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.OdinInspector.Attributes.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSirenix.Serialization.Config">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Serialization.Config.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Serialization.Config.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSirenix.Serialization">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Serialization.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Serialization.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSirenix.Utilities">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Utilities.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSirenix.Utilities.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Configuration">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Configuration.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Configuration.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Core">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Core.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Core.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Data">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Data.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Data.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Numerics">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Numerics.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Numerics.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Runtime.Serialization">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Runtime.Serialization.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Runtime.Serialization.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Xml">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Xml.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Xml.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppSystem.Xml.Linq">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Xml.Linq.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppSystem.Xml.Linq.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppZenject-usage">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppZenject-usage.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppZenject-usage.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppZenject">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppZenject.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppZenject.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2Cpp__Generated">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2Cpp__Generated.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2Cpp__Generated.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.Addressables">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.Addressables.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.Addressables.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.InputSystem">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.InputSystem.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.InputSystem.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.Mathematics">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.Mathematics.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.Mathematics.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.RenderPipelines.Core.Runtime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.ResourceManager">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.ResourceManager.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.ResourceManager.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.TextMeshPro">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.TextMeshPro.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.TextMeshPro.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.CoreUtils">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.CoreUtils.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.CoreUtils.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.Interaction.Toolkit">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.Interaction.Toolkit.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.Interaction.Toolkit.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.Management">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.Management.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.Management.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.MockHMD">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.MockHMD.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.MockHMD.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.Oculus">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.Oculus.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.Oculus.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.OpenXR">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.OpenXR.Features.ConformanceAutomation">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.ConformanceAutomation.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.OpenXR.Features.MetaQuestSupport">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.MetaQuestSupport.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.MetaQuestSupport.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.OpenXR.Features.MockRuntime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.MockRuntime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.MockRuntime.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.OpenXR.Features.OculusQuestSupport">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.OculusQuestSupport.dll</HintPath>
 		</Reference>
 		<Reference Include="Unity.XR.OpenXR.Features.RuntimeDebugger">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.RuntimeDebugger.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Unity.XR.OpenXR.Features.RuntimeDebugger.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.AccessibilityModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AccessibilityModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AccessibilityModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.AIModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AIModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AIModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.AndroidJNIModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AndroidJNIModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AndroidJNIModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.AnimationModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AnimationModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AnimationModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.ARModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ARModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ARModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.AssetBundleModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AssetBundleModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AssetBundleModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.AudioModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AudioModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.AudioModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.ClothModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ClothModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ClothModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.CrashReportingModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.CrashReportingModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.CrashReportingModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.DirectorModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.DirectorModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.DirectorModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.DSPGraphModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.DSPGraphModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.DSPGraphModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.GameCenterModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.GameCenterModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.GameCenterModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.GIModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.GIModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.GIModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.GridModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.GridModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.GridModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.HotReloadModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.HotReloadModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.HotReloadModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.ImageConversionModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ImageConversionModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ImageConversionModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.IMGUIModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.IMGUIModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.IMGUIModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.InputLegacyModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.InputModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.InputModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.InputModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.JSONSerializeModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.JSONSerializeModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.JSONSerializeModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.LocalizationModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.LocalizationModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.LocalizationModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.ParticleSystemModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ParticleSystemModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ParticleSystemModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.PerformanceReportingModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.PerformanceReportingModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.PerformanceReportingModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.Physics2DModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.Physics2DModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.Physics2DModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.PhysicsModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.ProfilerModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ProfilerModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ProfilerModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.ScreenCaptureModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ScreenCaptureModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.ScreenCaptureModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.SharedInternalsModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SharedInternalsModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SharedInternalsModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.SpatialTracking">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SpatialTracking.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.SpriteMaskModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SpriteMaskModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SpriteMaskModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.SpriteShapeModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SpriteShapeModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SpriteShapeModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.StreamingModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.StreamingModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.StreamingModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.SubstanceModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SubstanceModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SubstanceModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.SubsystemsModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SubsystemsModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.SubsystemsModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TerrainModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TerrainModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TerrainModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TerrainPhysicsModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TerrainPhysicsModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TextCoreFontEngineModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TextCoreTextEngineModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TextRenderingModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TextRenderingModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TextRenderingModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TilemapModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TilemapModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TilemapModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.TLSModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TLSModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.TLSModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UI">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UIElementsModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UIElementsModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UIElementsModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UIElementsNativeModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UIElementsNativeModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UIElementsNativeModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UIModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UIModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UIModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UmbraModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UmbraModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UmbraModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UNETModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UNETModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UNETModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityAnalyticsCommonModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityAnalyticsModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityAnalyticsModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityConnectModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityConnectModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityConnectModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityCurlModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityCurlModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityCurlModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityTestProtocolModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityTestProtocolModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityWebRequestAudioModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityWebRequestModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityWebRequestTextureModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.UnityWebRequestWWWModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.VehiclesModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VehiclesModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VehiclesModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.VFXModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VFXModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VFXModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.VideoModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VideoModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VideoModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.VRModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VRModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.VRModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.WindModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.WindModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.WindModule.dll</HintPath>
 		</Reference>
 		<Reference Include="UnityEngine.XRModule">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.XRModule.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\UnityEngine.XRModule.dll</HintPath>
 		</Reference>
 		<Reference Include="MelonLoader">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\net6\MelonLoader.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\net6\MelonLoader.dll</HintPath>
 		</Reference>
 		<Reference Include="0Harmony">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\net6\0Harmony.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\net6\0Harmony.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppInterop.Runtime">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppInterop.Common">
-			<HintPath>C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\MelonLoader\net6\Il2CppInterop.Common.dll</HintPath>
+			<HintPath>D:\VRFS_Camera_051\MelonLoader\net6\Il2CppInterop.Common.dll</HintPath>
 		</Reference>
 
 	</ItemGroup>
@@ -440,6 +440,6 @@
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="COPY &quot;$(TargetPath)&quot; &quot;C:\Users\compu\CascadeProjects\VRFSCam\VRFS_Camera_051\Mods&quot;" />
+		<Exec Command="COPY &quot;$(TargetPath)&quot; &quot;D:\VRFS_Camera_051\Mods&quot;" />
 	</Target>
 </Project>
