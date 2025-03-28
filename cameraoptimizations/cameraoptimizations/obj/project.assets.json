@@ -312,11 +312,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\seby\\source\\repos\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
+      "projectUniqueName": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
       "projectName": "VRFSCam",
-      "projectPath": "C:\\Users\\seby\\source\\repos\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
+      "projectPath": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
       "packagesPath": "C:\\Users\\seby\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\seby\\source\\repos\\cameraoptimizations\\cameraoptimizations\\obj\\",
+      "outputPath": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\seby\\AppData\\Roaming\\NuGet\\NuGet.Config",

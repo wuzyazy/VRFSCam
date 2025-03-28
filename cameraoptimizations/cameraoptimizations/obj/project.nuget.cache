@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HvxT9RJZDq4=",
+  "dgSpecHash": "habwJmGL4Ec=",
   "success": true,
-  "projectFilePath": "C:\\Users\\seby\\source\\repos\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
+  "projectFilePath": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\seby\\.nuget\\packages\\discordrichpresence\\1.2.1.24\\discordrichpresence.1.2.1.24.nupkg.sha512",
     "C:\\Users\\seby\\.nuget\\packages\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
