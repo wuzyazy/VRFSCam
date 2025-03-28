@@ -11,3 +11,4 @@ cameraoptimizations/.vs/VRFSCam/FileContentIndex
 # I don't want to have to include this but I'm going to lose my shit otherwise :P
 VRFS_Camera_051/
 cameraoptimizations/cameraoptimizations/VRFSCam.csproj
+cameraoptimizations/cameraoptimizations/obj/Debug/net6.0/VRFSCam.csproj.Up2Date
