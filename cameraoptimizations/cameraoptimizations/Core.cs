@@ -348,7 +348,7 @@ namespace VRFSCam
                 yield break;
             }
 
-            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/wbbym8.1");
+            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/742imh.asset");
             yield return uwr.SendWebRequest();
 
             if (uwr.result != UnityWebRequest.Result.Success)
@@ -364,7 +364,7 @@ namespace VRFSCam
                 yield break;
             }
 
-            GameObject prefab = bundle.LoadAsset<GameObject>("Zoomsettingscanvas");
+            GameObject prefab = bundle.LoadAsset<GameObject>("VRFSCamSettings");
             if (prefab == null)
             {
                 Debug.LogError("prefab not found in assetbundle");
