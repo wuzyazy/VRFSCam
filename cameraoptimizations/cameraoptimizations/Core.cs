@@ -39,6 +39,8 @@ namespace VRFSCam
         private float _minFOV = 1f;
         private float _maxFOV = 120f;
         private float _baseFOV = 60f;
+        private float _zoomFactor = 0.9f; // Internal zoom factor
+        private float _maxZoomDistance = 110f; // Internal max zoom distance
 
         // Camera Positioning
         private Vector3 _positionBeforeMainMode;
@@ -85,14 +87,16 @@ namespace VRFSCam
         public static float RemainingMatchTime { get; private set; }
         public static Keyboard Keyboard { get; private set; }
 
-        public float ZoomFactor => _zoomFactorPreference?.Value ?? 0.9f;
-        public float MaxZoomDistance => _maxZoomDistancePreference?.Value ?? 110f;
-        #endregion
-
-        #region Preferences
-        private static MelonPreferences_Category _configCategory;
-        private static MelonPreferences_Entry<float> _maxZoomDistancePreference;
-        private static MelonPreferences_Entry<float> _zoomFactorPreference;
+        public float ZoomFactor
+        {
+            get => _zoomFactor;
+            set => _zoomFactor = value;
+        }
+        public float MaxZoomDistance
+        {
+            get => _maxZoomDistance;
+            set => _maxZoomDistance = value;
+        }
         #endregion
 
         #region Initialization
@@ -131,8 +135,6 @@ namespace VRFSCam
             {
                 LoggerInstance.Error($"Failed to initialize Harmony patches: {ex.Message}");
             }
-
-            InitializePreferences();
         }
 
         public override void OnLateInitializeMelon()
@@ -246,22 +248,6 @@ namespace VRFSCam
             _harmony.PatchAll();
         }
 
-        private void InitializePreferences()
-        {
-            try
-            {
-                _configCategory = MelonPreferences.CreateCategory("VRFSCam+");
-                _zoomFactorPreference = _configCategory.CreateEntry("Zoomfactor", 0.9f, "Zoom Factor", "Zoom multiplier (default 0.9)");
-                _maxZoomDistancePreference = _configCategory.CreateEntry("maxZooomdistance", 110f, "Max Zoom Distance", "Distance at which zoom is maximum (default 110)");
-            }
-            catch (Exception ex)
-            {
-                LoggerInstance.Error($"Failed to initialize preferences: {ex.Message}. Default values will be used.");
-                // Set fallback values
-                _zoomFactorPreference = null;
-                _maxZoomDistancePreference = null;
-            }
-        }
         #endregion
 
         #region Discord RPC
