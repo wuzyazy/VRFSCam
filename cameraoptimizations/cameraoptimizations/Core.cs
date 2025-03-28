@@ -81,6 +81,9 @@ namespace VRFSCam
 
         public static GameObject UIobj;
 
+        public static Slider zoomfactorslider;
+
+        public static TextMeshPro zoomfactortext;
         public static bool isMenuActive = false;
 
         public static UnityEngine.UI.Button resetzoomfactorbtn;
@@ -375,10 +378,11 @@ namespace VRFSCam
             prefab.SetActive(false);
             UIobj = GameObject.Find("VRFSCamSettings(Clone)");
             UIobj.SetActive(false);
-            resetzoomfactorbtn = GameObject.Find("resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
-            var zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
-            var zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>();
-            zoomfactortext.text = zoomfactorslider.value.ToString("F2");
+            Transform camSettingsTransform = UIobj.transform;
+            resetzoomfactorbtn = camSettingsTransform.Find("VRFSCamPanel/resetzoomfactorbtn")?.GetComponent<UnityEngine.UI.Button>();
+            zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
+            zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>();
+            zoomfactortext.text = zoomfactorslider.value.ToString("F1");
           resetzoomfactorbtn.onClick.AddListener(DelegateSupport.ConvertDelegate<UnityEngine.Events.UnityAction>(OnResetZoomButtonClick));
             bundle.Unload(false);
             
@@ -519,8 +523,32 @@ namespace VRFSCam
             try
             {
                 CheckText();
+              /*  if (isMenuActive)
+                {
+                    zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
+                    zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>();    -- THIS DOSENT WORK FOR SOME REASON
+                    zoomfactortext.text = zoomfactorslider.value.ToString("F1");
+                    zoomfactorslider.value = _zoomFactor;
+                }
+              */
+                // test
+                if ((Mouse.current.leftButton.wasPressedThisFrame)) // Left mouse button
+                {
+                    RaycastHit hit;
+                    Vector2 mousePosition = Mouse.current.position.ReadValue();
 
-                
+                    // Convert mouse position to screen point and cast a ray from it
+                    Ray ray = Camera.main.ScreenPointToRay(mousePosition);
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        if (hit.collider != null && hit.collider.gameObject == resetzoomfactorbtn.gameObject)
+                        {
+                            Debug.Log("Button clicked via raycast!");
+                        }
+                    }
+                }
+
                 // Initialize camera if needed
                 if (_mainCamera == null)
                 {
