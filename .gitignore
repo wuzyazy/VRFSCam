@@ -5,3 +5,10 @@
 /cameraoptimizations/.vs/VRFSCam/FileContentIndex/446a71f6-e833-4923-a621-2c8869c8e9be.vsidx
 cameraoptimizations/.vs/VRFSCam/FileContentIndex/189a19bb-554c-4b01-b51e-211cf15b6e8e.vsidx
 cameraoptimizations/.vs/VRFSCam/FileContentIndex/e74ff3de-f079-462d-bf1c-c3dc53cf4561.vsidx
+
+# Git was being incredibly annoying with these files
+# Including them in .gitignore so I can make local changes and adjustments
+# without breaking the whole project
+# I don't want to have to include this but I'm going to lose my shit otherwise :P
+VRFS_Camera_051/
+cameraoptimizations/cameraoptimizations/VRFSCam.csproj
