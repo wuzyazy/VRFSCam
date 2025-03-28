@@ -57,6 +57,7 @@ namespace VRFSCam
         // UI Elements
         private GameObject _canvasObject;
         private GameObject _textObject;
+        private bool _GUIInitialized = false;
 
         // Discord RPC
         private DiscordRpcClient _client;
@@ -341,6 +342,12 @@ namespace VRFSCam
 
         private IEnumerator LoadUI()
         {
+            // Skip if UI is already initialized
+            if (_GUIInitialized)
+            {
+                yield break;
+            }
+
             UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/wbbym8.1");
             yield return uwr.SendWebRequest();
 
@@ -366,6 +373,9 @@ namespace VRFSCam
 
             GameObject.Instantiate(prefab);
             bundle.Unload(false);
+            
+            // Mark UI as initialized
+            _GUIInitialized = true;
         }
 
         private void CreateText()
