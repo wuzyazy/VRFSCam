@@ -12,6 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
@@ -55,9 +56,11 @@ namespace VRFSCam
         private float _offsetHeight = 2f;
 
         // UI Elements
+        private UnityAction resetZoomFactorAction;
         private GameObject _canvasObject;
         private GameObject _textObject;
         private bool _GUIInitialized = false;
+        
 
         // Discord RPC
         private DiscordRpcClient _client;
@@ -74,6 +77,12 @@ namespace VRFSCam
         #region Public Properties
 
         public static GameObject UIobj;
+
+        public static bool isMenuActive = false;
+
+        public static UnityEngine.UI.Button resetzoomfactorbtn;
+
+        public static UnityEngine.UI.Button resetdistancebtn;
         public static TextMeshProUGUI TextMeshPro { get; private set; }
         public static Ruleset Ruleset { get; private set; }
         public static float DefaultFOV { get; private set; } = 60f;
@@ -373,11 +382,20 @@ namespace VRFSCam
                 yield break;
             }
 
+            UIobj = prefab;
+
             GameObject.Instantiate(prefab);
+            prefab.SetActive(false);
+            resetzoomfactorbtn = GameObject.Find("resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
+            resetzoomfactorbtn.onClick.AddListener(() => OnResetZoomButtonClick());
             bundle.Unload(false);
             
             // Mark UI as initialized
             _GUIInitialized = true;
+        }
+        private void OnResetZoomButtonClick()
+        {
+            Debug.Log("Reset Zoom Button clicked!");
         }
 
         private void CreateText()
@@ -585,6 +603,11 @@ namespace VRFSCam
 
                     _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _targetFOV, _lerpSpeed * Time.deltaTime);
                 }
+
+                if (Keyboard.pKey.wasPressedThisFrame)
+                {
+                    ToggleMenu();
+                }
             }
             catch (Exception ex)
             {
@@ -618,6 +641,18 @@ namespace VRFSCam
             {
                 LoggerInstance.Warning($"Error handling main mode toggle: {ex.Message}");
             }
+        }
+
+        private void ToggleMenu()
+        {
+            if (UIobj == null) return;
+
+            isMenuActive = !isMenuActive; 
+            UIobj.SetActive(isMenuActive); // Only set active if menu is active
+
+            
+            Cursor.visible = isMenuActive;
+            Cursor.lockState = isMenuActive ? CursorLockMode.None : CursorLockMode.Locked;
         }
 
         private void UpdateDiscordStatus()
@@ -761,6 +796,41 @@ namespace VRFSCam
                     return true; // Default to allowing the original method to run
                 }
             }
+
+
+
+        }
+
+        // Additional harmony patch to prevent the camera from moving when the settings are open
+        [HarmonyPatch(typeof(PCMove), "Update")]
+        public static class togglemenupatch
+        {
+            public static bool Prefix(PCMove __instance)
+            {
+                try
+                {
+                    
+                    if (isMenuActive)
+                    {
+                        __instance.stopInput = true;
+                        __instance.stopRotate = true;
+                        return false;
+                    }
+                    else
+                    {
+                        __instance.stopInput = false;
+                        __instance.stopRotate = false;
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MelonLogger.Warning($"Error in togglemenupatch: {ex.Message}");
+                    return true; // Default to allowing the original method to run
+                }
+            }
+
+
         }
 
         [HarmonyPatch(typeof(PCMove), "Update")]
