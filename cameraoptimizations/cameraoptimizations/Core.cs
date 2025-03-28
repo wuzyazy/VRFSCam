@@ -382,7 +382,11 @@ namespace VRFSCam
         {
             try
             {
-                MelonCoroutines.Start(LoadUI());
+                // Only start LoadUI coroutine if UI is not already initialized
+                if (!_GUIInitialized)
+                {
+                    MelonCoroutines.Start(LoadUI());
+                }
                 if (_canvasObject == null)
                 {
                     _canvasObject = new GameObject("SebyCanvas");
