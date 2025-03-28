@@ -72,6 +72,8 @@ namespace VRFSCam
         #endregion
 
         #region Public Properties
+
+        public static GameObject UIobj;
         public static TextMeshProUGUI TextMeshPro { get; private set; }
         public static Ruleset Ruleset { get; private set; }
         public static float DefaultFOV { get; private set; } = 60f;
@@ -382,8 +384,8 @@ namespace VRFSCam
         {
             try
             {
-                // Only start LoadUI coroutine if UI is not already initialized
-                if (!_GUIInitialized)
+                // Only start LoadUI coroutine if UI gameobject exists OR if gui is initialized
+                if (!_GUIInitialized || UIobj == null)
                 {
                     MelonCoroutines.Start(LoadUI());
                 }
@@ -508,6 +510,7 @@ namespace VRFSCam
             {
                 CheckText();
 
+                
                 // Initialize camera if needed
                 if (_mainCamera == null)
                 {
