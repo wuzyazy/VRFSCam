@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj": {}
+    "C:\\Users\\compu\\CascadeProjects\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj": {}
   },
   "projects": {
-    "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj": {
+    "C:\\Users\\compu\\CascadeProjects\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
+        "projectUniqueName": "C:\\Users\\compu\\CascadeProjects\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
         "projectName": "VRFSCam",
-        "projectPath": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
-        "packagesPath": "C:\\Users\\seby\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\obj\\",
+        "projectPath": "C:\\Users\\compu\\CascadeProjects\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
+        "packagesPath": "C:\\Users\\compu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\compu\\CascadeProjects\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\seby\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\compu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.200"
       },
       "frameworks": {
         "net6.0": {
@@ -81,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
