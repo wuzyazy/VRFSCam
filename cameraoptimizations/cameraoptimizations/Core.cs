@@ -3,6 +3,7 @@ using DiscordRPC.Logging;
 using HarmonyLib;
 using Il2Cpp;
 using Il2CppHutongGames.PlayMaker.Actions;
+using Il2CppInterop.Runtime;
 using Il2CppPhoton.Pun;
 using Il2CppSteamworks;
 using Il2CppTMPro;
@@ -368,12 +369,17 @@ namespace VRFSCam
                 yield break;
             }
 
-            UIobj = prefab;
+
 
             GameObject.Instantiate(prefab);
             prefab.SetActive(false);
+            UIobj = GameObject.Find("VRFSCamSettings(Clone)");
+            UIobj.SetActive(false);
             resetzoomfactorbtn = GameObject.Find("resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
-            resetzoomfactorbtn.onClick.AddListener(() => OnResetZoomButtonClick());
+            var zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
+            var zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>();
+            zoomfactortext.text = zoomfactorslider.value.ToString("F2");
+          resetzoomfactorbtn.onClick.AddListener(DelegateSupport.ConvertDelegate<UnityEngine.Events.UnityAction>(OnResetZoomButtonClick));
             bundle.Unload(false);
             
             // Mark UI as initialized
