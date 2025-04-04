@@ -340,7 +340,7 @@ namespace VRFSCam
                 }
             }
         }
-
+        /*
         private IEnumerator LoadUI()
         {
             // Skip if UI is already initialized
@@ -389,6 +389,7 @@ namespace VRFSCam
             // Mark UI as initialized
             _GUIInitialized = true;
         }
+        */
         private void OnResetZoomButtonClick()
         {
             Debug.Log("Reset Zoom Button clicked!");
@@ -401,7 +402,7 @@ namespace VRFSCam
                 // Only start LoadUI coroutine if UI gameobject exists OR if gui is initialized
                 if (!_GUIInitialized || UIobj == null)
                 {
-                    MelonCoroutines.Start(LoadUI());
+                    // MelonCoroutines.Start(LoadUI());
                 }
                 if (_canvasObject == null)
                 {
