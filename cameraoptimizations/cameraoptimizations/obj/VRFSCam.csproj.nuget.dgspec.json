@@ -46,6 +46,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Discord.Net": {
+              "target": "Package",
+              "version": "[3.17.2, )"
+            },
+            "Discord.Net.WebSocket": {
+              "target": "Package",
+              "version": "[3.17.2, )"
+            },
             "DiscordRichPresence": {
               "target": "Package",
               "version": "[1.2.1.24, )"

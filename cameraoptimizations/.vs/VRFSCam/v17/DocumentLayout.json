@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|c:\\users\\seby\\documents\\github\\vrfscam\\cameraoptimizations\\cameraoptimizations\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|solutionrelative:cameraoptimizations\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|c:\\users\\seby\\documents\\github\\vrfscam\\cameraoptimizations\\cameraoptimizations\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|solutionrelative:cameraoptimizations\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "HarmonyPatches.cs",
+              "DocumentMoniker": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\HarmonyPatches.cs",
+              "RelativeDocumentMoniker": "cameraoptimizations\\HarmonyPatches.cs",
+              "ToolTip": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\HarmonyPatches.cs",
+              "RelativeToolTip": "cameraoptimizations\\HarmonyPatches.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAIwGoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-13T07:51:04.75Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +41,7 @@
               "RelativeDocumentMoniker": "cameraoptimizations\\Core.cs",
               "ToolTip": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\Core.cs",
               "RelativeToolTip": "cameraoptimizations\\Core.cs",
-              "ViewState": "AgIAAJEBAAAAAAAAAAAowKMBAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAI8BAAAAAAAAAAAAAKQBAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-09T17:33:39.389Z",
               "EditorCaption": ""

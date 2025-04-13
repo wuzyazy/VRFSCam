@@ -18,6 +18,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Reflection;
 
 [assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.4", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
@@ -84,7 +85,12 @@ namespace VRFSCam
 
         public static Slider zoomfactorslider;
 
-        public static TextMeshPro zoomfactortext;
+        public static Slider distancetomaxslider;
+
+        public static TextMeshProUGUI distancetomaxvalue;
+
+        public static TextMeshProUGUI zoomfactortext;
+
         public static bool isMenuActive = false;
 
         public static UnityEngine.UI.Button resetzoomfactorbtn;
@@ -161,7 +167,7 @@ namespace VRFSCam
                 {
                     LoggerInstance.Warning("Keyboard input not available. Some features may not work correctly.");
                 }
-
+                CheckText();
                 _currentOffset = new Vector3(0, _offsetHeight, -_baseOffsetDistance);
             }
             catch (Exception ex)
@@ -336,8 +342,9 @@ namespace VRFSCam
                     if (!textHasBeenCreated) // Only create text if it hasn't been created yet
                     {
                         textHasBeenCreated = true;
-                        MelonLogger.Msg("[VRFSCam+] Initializing UI text");
-                        CreateText(); 
+                        MelonLogger.Msg("[VRFSCam+] Initializing UI");
+                        CreateText();
+                        MelonCoroutines.Start(LoadUI()); // Start loading UI
                     }
                     
                 }
@@ -347,7 +354,7 @@ namespace VRFSCam
                 }
             }
         }
-        /*
+        
         private IEnumerator LoadUI()
         {
             // Skip if UI is already initialized
@@ -381,25 +388,70 @@ namespace VRFSCam
 
 
 
-            GameObject.Instantiate(prefab);
+            UIobj = GameObject.Instantiate(prefab);
+
             prefab.SetActive(false);
-            UIobj = GameObject.Find("VRFSCamSettings(Clone)");
-            UIobj.SetActive(false);
-            Transform camSettingsTransform = UIobj.transform;
-            resetzoomfactorbtn = camSettingsTransform.Find("VRFSCamPanel/resetzoomfactorbtn")?.GetComponent<UnityEngine.UI.Button>();
-            zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
-            zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>();
-            zoomfactortext.text = zoomfactorslider.value.ToString("F1");
-          resetzoomfactorbtn.onClick.AddListener(DelegateSupport.ConvertDelegate<UnityEngine.Events.UnityAction>(OnResetZoomButtonClick));
-            bundle.Unload(false);
+
             
+
+            UIobj.SetActive(false);
+
+            UnityEngine.Object.DontDestroyOnLoad(UIobj);
+
+            MelonLogger.Msg("About to setup the UI");
+
+            resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
+
+
+            MelonLogger.Msg("About to setup the UI");
+            zoomfactortext = UIobj.transform.Find("VRFSCamPanel/zoomfactorvalue").GetComponent<TextMeshProUGUI>();
+            MelonLogger.Msg("About to setup the UI");
+            resetdistancebtn = UIobj.transform.Find("VRFSCamPanel/resetdistancebtn").GetComponent<UnityEngine.UI.Button>();
+            MelonLogger.Msg("About to setup the UI");
+            zoomfactorslider = UIobj.transform.Find("VRFSCamPanel/zoomfactorslider").GetComponent<Slider>();
+            zoomfactorslider.maxValue = 2.5f;
+            MelonLogger.Msg("About to setup the UI listener");
+            zoomfactorslider.onValueChanged.AddListener((UnityAction<float>)delegate (float value)
+            {
+                _zoomFactor = value;
+                zoomfactortext.text = value.ToString("F1");
+            });
+            distancetomaxvalue = UIobj.transform.Find("VRFSCamPanel/distancetomaxvalue").GetComponent<TextMeshProUGUI>();
+            distancetomaxslider = UIobj.transform.Find("VRFSCamPanel/distancetomaxslider").GetComponent<Slider>();
+            distancetomaxslider.maxValue = 250f;    
+            distancetomaxslider.onValueChanged.AddListener((UnityAction<float>)delegate (float value)
+            {
+                _maxZoomDistance = value;
+                distancetomaxvalue.text = value.ToString("F1");
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            bundle.Unload(false);
+
             // Mark UI as initialized
             _GUIInitialized = true;
         }
-        */
-        private void OnResetZoomButtonClick()
+
+
+
+        
+        
+        
+        public void OnResetZoomButtonClick()
         {
-            Debug.Log("Reset Zoom Button clicked!");
+            MelonLogger.Msg("[VRFSCam+] [UI] Reset Zoom Button clicked!");
         }
 
         private void CreateText()
@@ -534,15 +586,15 @@ namespace VRFSCam
         {
             try
             {
-                CheckText();
-              /*  if (isMenuActive)
-                {
-                    zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
-                    zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>();    -- THIS DOSENT WORK FOR SOME REASON
-                    zoomfactortext.text = zoomfactorslider.value.ToString("F1");
-                    zoomfactorslider.value = _zoomFactor;
-                }
-              */
+                
+              //  if (isMenuActive)
+             //  {
+              //      zoomfactorslider = GameObject.Find("zoomfactorslider").GetComponent<Slider>();
+             //       zoomfactortext = GameObject.Find("zoomfactorvalue").GetComponent<TextMeshPro>(); 
+            //        zoomfactortext.text = zoomfactorslider.value.ToString("F1");
+           //         zoomfactorslider.value = _zoomFactor;
+           //     }
+              
   
 
 
@@ -785,109 +837,6 @@ namespace VRFSCam
         }
         #endregion
 
-        #region Harmony Patches
-        /*
-        [HarmonyPatch(typeof(PCMove), "Update")]
-        public static class DisableInputPatch
-        {
-            public static bool Prefix(PCMove __instance)
-            {
-                try
-                {
-                    Instance = __instance;
-                    if (MainMode)
-                    {
-                        __instance.stopInput = true;
-                        __instance.stopRotate = true;
-                        return false;
-                    }
-                    else
-                    {
-                        __instance.stopInput = false;
-                        __instance.stopRotate = false;
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MelonLogger.Warning($"Error in DisableInputPatch: {ex.Message}");
-                    return true; // Default to allowing the original method to run
-                }
-            }
-
-
-
-        }
-
-        // Additional harmony patch to prevent the camera from moving when the settings are open
-        [HarmonyPatch(typeof(PCMove), "Update")]
-        public static class togglemenupatch
-        {
-            public static bool Prefix(PCMove __instance)
-            {
-                try
-                {
-                    
-                    if (isMenuActive)
-                    {
-                        __instance.stopInput = true;
-                        __instance.stopRotate = true;
-                        return false;
-                    }
-                    else
-                    {
-                        __instance.stopInput = false;
-                        __instance.stopRotate = false;
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MelonLogger.Warning($"Error in togglemenupatch: {ex.Message}");
-                    return true; // Default to allowing the original method to run
-                }
-            }
-
-
-        }
-
-        [HarmonyPatch(typeof(PCMove), "Update")]
-        public static class DynamicFOVPatch
-        {
-            static void Postfix(PCMove __instance)
-            {
-                try
-                {
-                    float currentFOV = Camera.main.fieldOfView;
-                    __instance.sensivity = 5f * (currentFOV / DefaultFOV);
-                }
-                catch (Exception ex)
-                {
-                    MelonLogger.Warning($"Error in DynamicFOVPatch: {ex.Message}");
-                }
-            }
-        }
-
-        [HarmonyPatch(typeof(Debug))]
-        [HarmonyPatch("Log", new Type[] { typeof(Il2CppSystem.Object) })]
-        public static class DebugPatch
-        {
-            static void Postfix(Il2CppSystem.Object message)
-            {
-                try
-                {
-                    MelonLogger.Msg($"[UnityLogs] {message?.ToString()}");
-                }
-                catch
-                {
-                    // Silently fail to avoid log spam
-                }
-            }
-        }
-
-        // PhotonConnectorPatch removed - cannot force code in camera
-        */
-        #endregion
 
         #region Helper Methods
         // Helper to log assembly errors only once
