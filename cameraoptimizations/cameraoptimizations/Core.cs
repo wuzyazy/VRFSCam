@@ -400,27 +400,30 @@ namespace VRFSCam
 
             UnityEngine.Object.DontDestroyOnLoad(UIobj);
 
-            MelonLogger.Msg("About to setup the UI");
+            
 
             resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
 
-
-            MelonLogger.Msg("About to setup the UI");
             zoomfactortext = UIobj.transform.Find("VRFSCamPanel/zoomfactorvalue").GetComponent<TextMeshProUGUI>();
-            MelonLogger.Msg("About to setup the UI");
+       
             resetdistancebtn = UIobj.transform.Find("VRFSCamPanel/resetdistancebtn").GetComponent<UnityEngine.UI.Button>();
-            MelonLogger.Msg("About to setup the UI");
+      
             zoomfactorslider = UIobj.transform.Find("VRFSCamPanel/zoomfactorslider").GetComponent<Slider>();
+
             zoomfactorslider.maxValue = 2.5f;
-            MelonLogger.Msg("About to setup the UI listener");
+
             zoomfactorslider.onValueChanged.AddListener((UnityAction<float>)delegate (float value)
             {
                 _zoomFactor = value;
                 zoomfactortext.text = value.ToString("F1");
             });
+
             distancetomaxvalue = UIobj.transform.Find("VRFSCamPanel/distancetomaxvalue").GetComponent<TextMeshProUGUI>();
+
             distancetomaxslider = UIobj.transform.Find("VRFSCamPanel/distancetomaxslider").GetComponent<Slider>();
+
             distancetomaxslider.maxValue = 250f;    
+
             distancetomaxslider.onValueChanged.AddListener((UnityAction<float>)delegate (float value)
             {
                 _maxZoomDistance = value;
@@ -429,14 +432,14 @@ namespace VRFSCam
 
             // Behold the Initialization of Buttons...
 
-            resetzoomfactorbtn.onClick.AddListener(() => // WORKS???
+            resetzoomfactorbtn.onClick.AddListener(() =>
             {
                 _zoomFactor = 0.9f;
                 zoomfactortext.text = _zoomFactor.ToString("F1");
                 zoomfactorslider.value = _zoomFactor;
             });
 
-            resetdistancebtn.onClick.AddListener(() =>  // OMG IM SO HAPPY BRO
+            resetdistancebtn.onClick.AddListener(() => 
             {
                 _maxZoomDistance = 110f;
                 distancetomaxvalue.text = _maxZoomDistance.ToString("F1");
