@@ -93,7 +93,8 @@ namespace VRFSCam
         public static TextMeshProUGUI TextMeshPro { get; private set; }
         public static Ruleset Ruleset { get; private set; }
         public static float DefaultFOV { get; private set; } = 60f;
-        public static PCMove Instance { get; private set; }
+
+        public static PCMove Instance;
         public static bool BallFollowingMode { get; set; } = false;
         public static bool MainMode { get; set; } = false;
         public static int BlueScore { get; private set; }
@@ -785,6 +786,7 @@ namespace VRFSCam
         #endregion
 
         #region Harmony Patches
+        /*
         [HarmonyPatch(typeof(PCMove), "Update")]
         public static class DisableInputPatch
         {
@@ -884,6 +886,7 @@ namespace VRFSCam
         }
 
         // PhotonConnectorPatch removed - cannot force code in camera
+        */
         #endregion
 
         #region Helper Methods
