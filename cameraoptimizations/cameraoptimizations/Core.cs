@@ -363,7 +363,9 @@ namespace VRFSCam
                 yield break;
             }
 
-            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/742imh.asset");
+            // UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/742imh.asset"); Old UI v0.1
+            //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/u8hqev.asset");  New UI v0.2
+            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/s3rj8y.asset"); // New UI v0.3 -- fixed panel size
             yield return uwr.SendWebRequest();
 
             if (uwr.result != UnityWebRequest.Result.Success)
