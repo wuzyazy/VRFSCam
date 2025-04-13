@@ -62,6 +62,7 @@ namespace VRFSCam
         private UnityAction resetZoomFactorAction;
         private GameObject _canvasObject;
         private GameObject _textObject;
+        private bool textHasBeenCreated = false;
         private bool _GUIInitialized = false;
         
 
@@ -331,8 +332,13 @@ namespace VRFSCam
             {
                 try
                 {
-                    MelonLogger.Msg("[VRFSCam+] Initializing UI text");
-                    CreateText();
+                    if (!textHasBeenCreated) // Only create text if it hasn't been created yet
+                    {
+                        textHasBeenCreated = true;
+                        MelonLogger.Msg("[VRFSCam+] Initializing UI text");
+                        CreateText(); 
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -404,6 +410,8 @@ namespace VRFSCam
                 {
                     // MelonCoroutines.Start(LoadUI());
                 }
+
+
                 if (_canvasObject == null)
                 {
                     _canvasObject = new GameObject("SebyCanvas");
@@ -411,6 +419,7 @@ namespace VRFSCam
                     canvas.renderMode = RenderMode.ScreenSpaceOverlay;
                     _canvasObject.AddComponent<CanvasScaler>();
                     _canvasObject.AddComponent<GraphicRaycaster>();
+                    UnityEngine.Object.DontDestroyOnLoad(_canvasObject); // Removed the need to recreate the text every time
                 }
 
                 if (_textObject != null)
@@ -429,6 +438,7 @@ namespace VRFSCam
                 rectTransform.anchorMax = Vector2.zero;
                 rectTransform.pivot = Vector2.zero;
                 rectTransform.anchoredPosition = new Vector2(20, 20);
+                
             }
             catch (Exception ex)
             {
@@ -532,23 +542,8 @@ namespace VRFSCam
                     zoomfactorslider.value = _zoomFactor;
                 }
               */
-                // test
-                if ((Mouse.current.leftButton.wasPressedThisFrame)) // Left mouse button
-                {
-                    RaycastHit hit;
-                    Vector2 mousePosition = Mouse.current.position.ReadValue();
+  
 
-                    // Convert mouse position to screen point and cast a ray from it
-                    Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-
-                    if (Physics.Raycast(ray, out hit))
-                    {
-                        if (hit.collider != null && hit.collider.gameObject == resetzoomfactorbtn.gameObject)
-                        {
-                            Debug.Log("Button clicked via raycast!");
-                        }
-                    }
-                }
 
                 // Initialize camera if needed
                 if (_mainCamera == null)
