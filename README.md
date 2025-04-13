@@ -11,5 +11,7 @@ VRFSCam+ is a Unity mod designed to enhance the camera functionality in VRFS Cam
  - R Key: Reset FOV to default
 
  - M Key: Auto Mode (BETA)
+
+ - P Key: Show/Hide Settings
    
 ![Example](https://github.com/user-attachments/assets/081da8ea-6ee4-47e4-945f-9c63239e7032)
