@@ -19,6 +19,7 @@ using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Reflection;
+using UniverseLib;
 
 [assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.4", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
@@ -60,7 +61,6 @@ namespace VRFSCam
         private float _offsetHeight = 2f;
 
         // UI Elements
-        private UnityAction resetZoomFactorAction;
         private GameObject _canvasObject;
         private GameObject _textObject;
         private bool textHasBeenCreated = false;
@@ -372,7 +372,7 @@ namespace VRFSCam
                 yield break;
             }
 
-            AssetBundle bundle = AssetBundle.LoadFromMemory(uwr.downloadHandler.data);
+            UnityEngine.AssetBundle bundle = UnityEngine.AssetBundle.LoadFromMemory(uwr.downloadHandler.data);
             if (bundle == null)
             {
                 Debug.LogError("failed to load assetbundle");
@@ -424,6 +424,23 @@ namespace VRFSCam
                 _maxZoomDistance = value;
                 distancetomaxvalue.text = value.ToString("F1");
             });
+
+            // Behold the Initialization of Buttons...
+
+            resetzoomfactorbtn.onClick.AddListener(() => // WORKS???
+            {
+                _zoomFactor = 0.9f;
+                zoomfactortext.text = _zoomFactor.ToString("F1");
+                zoomfactorslider.value = _zoomFactor;
+            });
+
+            resetdistancebtn.onClick.AddListener(() =>  // OMG IM SO HAPPY BRO
+            {
+                _maxZoomDistance = 110f;
+                distancetomaxvalue.text = _maxZoomDistance.ToString("F1");
+                distancetomaxslider.value = _maxZoomDistance;
+            });
+
 
 
 

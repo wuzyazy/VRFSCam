@@ -57,6 +57,18 @@
             "DiscordRichPresence": {
               "target": "Package",
               "version": "[1.2.1.24, )"
+            },
+            "Il2CppInterop.Common": {
+              "target": "Package",
+              "version": "[1.4.5, )"
+            },
+            "Il2CppInterop.Runtime": {
+              "target": "Package",
+              "version": "[1.4.5, )"
+            },
+            "UniverseLib.IL2CPP.Interop.ML": {
+              "target": "Package",
+              "version": "[1.5.4.1, )"
             }
           },
           "imports": [

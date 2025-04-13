@@ -12,4 +12,7 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\seby\.nuget\packages\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgUniverseLib_Analyzers Condition=" '$(PkgUniverseLib_Analyzers)' == '' ">C:\Users\seby\.nuget\packages\universelib.analyzers\1.0.4</PkgUniverseLib_Analyzers>
+  </PropertyGroup>
 </Project>
