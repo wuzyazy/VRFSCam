@@ -105,6 +105,9 @@ namespace VRFSCam
 
         public static AudioSource uiaudiosource;
 
+        public static AudioClip hovers;
+        public static AudioClip clicks;
+
         public static bool isMenuActive = false;
 
         public static UnityEngine.UI.Button resetzoomfactorbtn;
@@ -407,12 +410,17 @@ namespace VRFSCam
             AudioClip click = bundle.LoadAsset<AudioClip>("click");
 
 
+            
+            
 
+            hovers = AudioClip.Instantiate(hover);
+            clicks = AudioClip.Instantiate(click);
             UIobj = GameObject.Instantiate(prefab);
 
             prefab.SetActive(false);
 
-            
+            UnityEngine.Object.DontDestroyOnLoad(hovers);
+            UnityEngine.Object.DontDestroyOnLoad(clicks);
 
             UIobj.SetActive(false);
 
@@ -476,14 +484,14 @@ namespace VRFSCam
                 _maxZoomDistance = 110f;
                 distancetomaxvalue.text = _maxZoomDistance.ToString("F1");
                 distancetomaxslider.value = _maxZoomDistance;
-                uiaudiosource.PlayOneShot(click);
+                uiaudiosource.PlayOneShot(clicks);
             });
 
             nextbtn.onClick.AddListener(() =>
             {
                 settingspage1.SetActive(false);
                 settingspage2.SetActive(true);
-                uiaudiosource.PlayOneShot(click);
+                uiaudiosource.PlayOneShot(clicks);
             });
 
 
@@ -491,7 +499,7 @@ namespace VRFSCam
             {
                 settingspage1.SetActive(true);
                 settingspage2.SetActive(false);
-                uiaudiosource.PlayOneShot(click);
+                uiaudiosource.PlayOneShot(clicks);
             });
 
 
