@@ -20,6 +20,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Reflection;
 using UniverseLib;
+using Button = UnityEngine.UI.Button;
+using UnityEngine.EventSystems;
 
 [assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.4", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
@@ -90,6 +92,18 @@ namespace VRFSCam
         public static TextMeshProUGUI distancetomaxvalue;
 
         public static TextMeshProUGUI zoomfactortext;
+
+        public static GameObject settingspage1;
+
+        public static GameObject settingspage2;
+
+        public static Button simplejerseybtn;
+
+        public static Button backbtn;
+
+        public static Button nextbtn;
+
+        public static AudioSource uiaudiosource;
 
         public static bool isMenuActive = false;
 
@@ -365,7 +379,8 @@ namespace VRFSCam
 
             // UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/742imh.asset"); Old UI v0.1
             //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/u8hqev.asset");  New UI v0.2
-            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/s3rj8y.asset"); // New UI v0.3 -- fixed panel size
+            //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/s3rj8y.asset"); // New UI v0.3 -- fixed panel size
+            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/kf79va.asset"); // New UI v0.4 -- new colors, added pages
             yield return uwr.SendWebRequest();
 
             if (uwr.result != UnityWebRequest.Result.Success)
@@ -388,6 +403,9 @@ namespace VRFSCam
                 yield break;
             }
 
+            AudioClip hover = bundle.LoadAsset<AudioClip>("hover");
+            AudioClip click = bundle.LoadAsset<AudioClip>("click");
+
 
 
             UIobj = GameObject.Instantiate(prefab);
@@ -402,13 +420,22 @@ namespace VRFSCam
 
             
 
-            resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
+            resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
 
-            zoomfactortext = UIobj.transform.Find("VRFSCamPanel/zoomfactorvalue").GetComponent<TextMeshProUGUI>();
+            zoomfactortext = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/zoomfactorvalue").GetComponent<TextMeshProUGUI>();
        
-            resetdistancebtn = UIobj.transform.Find("VRFSCamPanel/resetdistancebtn").GetComponent<UnityEngine.UI.Button>();
-      
-            zoomfactorslider = UIobj.transform.Find("VRFSCamPanel/zoomfactorslider").GetComponent<Slider>();
+            resetdistancebtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetdistancebtn").GetComponent<UnityEngine.UI.Button>();
+
+            nextbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/nextbtn").GetComponent<UnityEngine.UI.Button>();
+
+            backbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/backbtn").GetComponent<UnityEngine.UI.Button>();
+
+            zoomfactorslider = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/zoomfactorslider").GetComponent<Slider>();
+
+            uiaudiosource = UIobj.transform.Find("VRFSCamPanel/menusfx").GetComponent<AudioSource>();
+
+            settingspage1 = UIobj.transform.Find("VRFSCamPanel/SettingsPage1").gameObject;
+            settingspage2 = UIobj.transform.Find("VRFSCamPanel/SettingsPage2").gameObject;
 
             zoomfactorslider.maxValue = 2.5f;
 
@@ -418,9 +445,9 @@ namespace VRFSCam
                 zoomfactortext.text = value.ToString("F1");
             });
 
-            distancetomaxvalue = UIobj.transform.Find("VRFSCamPanel/distancetomaxvalue").GetComponent<TextMeshProUGUI>();
+            distancetomaxvalue = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/distancetomaxvalue").GetComponent<TextMeshProUGUI>();
 
-            distancetomaxslider = UIobj.transform.Find("VRFSCamPanel/distancetomaxslider").GetComponent<Slider>();
+            distancetomaxslider = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/distancetomaxslider").GetComponent<Slider>();
 
             distancetomaxslider.maxValue = 250f;    
 
@@ -437,14 +464,37 @@ namespace VRFSCam
                 _zoomFactor = 0.9f;
                 zoomfactortext.text = _zoomFactor.ToString("F1");
                 zoomfactorslider.value = _zoomFactor;
+                uiaudiosource.PlayOneShot(click);
             });
+            
+           
+
+
 
             resetdistancebtn.onClick.AddListener(() => 
             {
                 _maxZoomDistance = 110f;
                 distancetomaxvalue.text = _maxZoomDistance.ToString("F1");
                 distancetomaxslider.value = _maxZoomDistance;
+                uiaudiosource.PlayOneShot(click);
             });
+
+            nextbtn.onClick.AddListener(() =>
+            {
+                settingspage1.SetActive(false);
+                settingspage2.SetActive(true);
+                uiaudiosource.PlayOneShot(click);
+            });
+
+
+            backbtn.onClick.AddListener(() =>
+            {
+                settingspage1.SetActive(true);
+                settingspage2.SetActive(false);
+                uiaudiosource.PlayOneShot(click);
+            });
+
+
 
 
 

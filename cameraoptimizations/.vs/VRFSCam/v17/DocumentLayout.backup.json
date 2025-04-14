@@ -27,15 +27,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "VRFSCam",
+              "Title": "VRFSCam.csproj",
               "DocumentMoniker": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
               "RelativeDocumentMoniker": "cameraoptimizations\\VRFSCam.csproj",
               "ToolTip": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
               "RelativeToolTip": "cameraoptimizations\\VRFSCam.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-13T11:33:14.446Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-13T11:33:14.446Z"
             },
             {
               "$type": "Document",
@@ -47,8 +46,7 @@
               "RelativeToolTip": "cameraoptimizations\\HarmonyPatches.cs",
               "ViewState": "AgIAADAAAAAAAAAAAAAowGoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-13T07:51:04.75Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-13T07:51:04.75Z"
             },
             {
               "$type": "Document",
@@ -58,7 +56,7 @@
               "RelativeDocumentMoniker": "cameraoptimizations\\Core.cs",
               "ToolTip": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\Core.cs",
               "RelativeToolTip": "cameraoptimizations\\Core.cs",
-              "ViewState": "AgIAALIAAAAAAAAAAAAqwFkBAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAGEBAAAAAAAAAAAqwHsBAABcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-09T17:33:39.389Z",
               "EditorCaption": ""
