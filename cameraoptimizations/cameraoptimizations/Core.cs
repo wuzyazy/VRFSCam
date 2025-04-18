@@ -49,11 +49,6 @@ namespace VRFSCam
         private float _maxZoomDistance = 110f; // Internal max zoom distance
 
 
-        // Assign these in the inspector or via code
-        public List<Transform> playerTransforms; // All players
-        public Transform ballTransform;
-        public Transform cameraTransform;
-
         // Camera Positioning
         private Vector3 _positionBeforeMainMode;
         private Quaternion _rotationBeforeMainMode;
