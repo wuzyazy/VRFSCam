@@ -117,10 +117,6 @@ namespace VRFSCam
 
         public static bool isMenuActive = false;
 
-        public List<PhotonView> playerPhotonViews; // assign in inspector or via code
-        public PhotonView ballPhotonView;
-        public List<FPSControllerInstaller> playerControllers; // assign in inspector or via code
-        public Rigidbody ballRigidbody;
 
         public static UnityEngine.UI.Button resetzoomfactorbtn;
 
