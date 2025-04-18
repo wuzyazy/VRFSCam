@@ -31,7 +31,7 @@ namespace VRFSCam
     public class Core : MelonMod
     {
         #region Constants
-        public const string Version = "0.0.4";
+        public const string Version = "0.0.5";
         private const string DiscordAppId = "1354484678748409966";
         private const string BallObjectPrefix = "BallSingle(Clone)";
         #endregion
@@ -48,6 +48,11 @@ namespace VRFSCam
         private float _zoomFactor = 0.9f; // Internal zoom factor
         private float _maxZoomDistance = 110f; // Internal max zoom distance
 
+
+        // Assign these in the inspector or via code
+        public List<Transform> playerTransforms; // All players
+        public Transform ballTransform;
+        public Transform cameraTransform;
 
         // Camera Positioning
         private Vector3 _positionBeforeMainMode;
@@ -96,9 +101,15 @@ namespace VRFSCam
 
         public static GameObject settingspage1;
 
+        public static TshirtSettingsChanger activetshirtSettingsChanger;
+
         public static GameObject settingspage2;
 
         public static Button simplejerseybtn;
+
+        public static bool isSimpleJerseyActive = false;
+
+        public static TextMeshProUGUI simplejerseyActivatedText;
 
         public static Button backbtn;
 
@@ -412,21 +423,30 @@ namespace VRFSCam
                 yield break;
             }
 
-            AudioClip hover = bundle.LoadAsset<AudioClip>("hover");
-            AudioClip click = bundle.LoadAsset<AudioClip>("click");
+
+         //   AudioClip hover = bundle.LoadAsset<AudioClip>("hover");
+            if (prefab == null)
+            {
+                Debug.LogError("prefab not found in assetbundle");
+                yield break;
+            }
+
+          //  AudioClip click = bundle.LoadAsset<AudioClip>("click");
+            if (prefab == null)
+            {
+                Debug.LogError("prefab not found in assetbundle");
+                yield break;
+            }
 
 
-            
-            
 
-            hovers = AudioClip.Instantiate(hover);
-            clicks = AudioClip.Instantiate(click);
+
             UIobj = GameObject.Instantiate(prefab);
 
             prefab.SetActive(false);
 
-            UnityEngine.Object.DontDestroyOnLoad(hovers);
-            UnityEngine.Object.DontDestroyOnLoad(clicks);
+           // UnityEngine.Object.DontDestroyOnLoad(hovers);
+           // UnityEngine.Object.DontDestroyOnLoad(clicks);
 
             UIobj.SetActive(false);
 
@@ -439,6 +459,10 @@ namespace VRFSCam
             zoomfactortext = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/zoomfactorvalue").GetComponent<TextMeshProUGUI>();
        
             resetdistancebtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetdistancebtn").GetComponent<UnityEngine.UI.Button>();
+
+            simplejerseybtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/simplejerseybtn").GetComponent<UnityEngine.UI.Button>();
+
+            simplejerseyActivatedText = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/simplejerseybtn/Text (TMP)").GetComponent<TextMeshProUGUI>();
 
             nextbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/nextbtn").GetComponent<UnityEngine.UI.Button>();
 
@@ -478,7 +502,7 @@ namespace VRFSCam
                 _zoomFactor = 0.9f;
                 zoomfactortext.text = _zoomFactor.ToString("F1");
                 zoomfactorslider.value = _zoomFactor;
-                uiaudiosource.PlayOneShot(click);
+
             });
             
            
@@ -490,14 +514,14 @@ namespace VRFSCam
                 _maxZoomDistance = 110f;
                 distancetomaxvalue.text = _maxZoomDistance.ToString("F1");
                 distancetomaxslider.value = _maxZoomDistance;
-                uiaudiosource.PlayOneShot(clicks);
+
             });
 
             nextbtn.onClick.AddListener(() =>
             {
                 settingspage1.SetActive(false);
                 settingspage2.SetActive(true);
-                uiaudiosource.PlayOneShot(clicks);
+
             });
 
 
@@ -505,7 +529,24 @@ namespace VRFSCam
             {
                 settingspage1.SetActive(true);
                 settingspage2.SetActive(false);
-                uiaudiosource.PlayOneShot(clicks);
+            });
+
+            simplejerseybtn.onClick.AddListener(() =>
+            {
+                if (activetshirtSettingsChanger == null)
+                {
+                    activetshirtSettingsChanger = GameObject.Find("TshirtSettingsChanger")?.GetComponent<TshirtSettingsChanger>();
+                    if (activetshirtSettingsChanger == null)
+                    {
+                        Debug.LogError("TshirtSettingsChanger not found");
+                        return;
+                    }
+
+                }
+                isSimpleJerseyActive = !isSimpleJerseyActive;
+                activetshirtSettingsChanger.sky = isSimpleJerseyActive;
+                simplejerseyActivatedText.text = isSimpleJerseyActive ? "DISABLE SIMPLE JERSEYS" : "ENABLE SIMPLE JERSEYS";
+                simplejerseybtn.GetComponent<Image>().color = isSimpleJerseyActive ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.2f, 0.2f);
             });
 
 
@@ -709,7 +750,6 @@ namespace VRFSCam
                 }
 
                 HandleBallTracking();
-                HandleReplayManagement();
             }
             catch (System.IO.FileNotFoundException fnfEx) when (fnfEx.FileName != null && fnfEx.FileName.Contains("DiscordRPC"))
             {
@@ -965,209 +1005,6 @@ namespace VRFSCam
         }
         #endregion
 
-        #region Replay Management
-        public List<Transform> leftLegTransforms; // All leftLegs for all players
-        public List<Transform> rightLegTransforms; // All rightLegs for all players
 
-        [System.Serializable]
-        public class ObjectState
-        {
-            public Vector3 position;
-            public Quaternion rotation;
-            public ObjectState(Vector3 pos, Quaternion rot)
-            {
-                position = pos;
-                rotation = rot;
-            }
-        }
-
-        [System.Serializable]
-        public class ReplayFrame
-        {
-            public float time;
-            public ObjectState cameraState;
-            public List<ObjectState> playerStates;
-            public ObjectState ballState;
-            public List<ObjectState> leftLegStates;
-            public List<ObjectState> rightLegStates;
-            public ReplayFrame(float t, ObjectState cam, List<ObjectState> players, ObjectState ball, List<ObjectState> leftLegs, List<ObjectState> rightLegs)
-            {
-                time = t;
-                cameraState = cam;
-                playerStates = players;
-                ballState = ball;
-                leftLegStates = leftLegs;
-                rightLegStates = rightLegs;
-            }
-        }
-
-        private Queue<ReplayFrame> replayBuffer = new Queue<ReplayFrame>();
-        private float replayBufferLength = 10f; // seconds
-        private float replaySampleInterval = 0.05f;
-        private float lastReplaySampleTime = 0f;
-        private bool isReplaying = false;
-        private List<ReplayFrame> replayFrames;
-        private float replayStartTime;
-
-        // Assign these in the inspector or via code
-        public List<Transform> playerTransforms; // All players
-        public Transform ballTransform;
-        public Transform cameraTransform;
-
-        // --- Photon/Control integration fields ---
-        
-
-        void SetPhotonSync(bool enabled)
-        {
-            // Enable/disable PhotonView for all players
-            if (playerPhotonViews != null)
-            {
-                foreach (var pv in playerPhotonViews)
-                    if (pv != null) pv.enabled = enabled;
-            }
-            // Ball PhotonView
-            if (ballPhotonView != null)
-                ballPhotonView.enabled = enabled;
-        }
-
-        void SetPlayerControl(bool enabled)
-        {
-            // Enable/disable player control scripts
-            if (playerControllers != null)
-            {
-                foreach (var pc in playerControllers)
-                    if (pc != null) pc.enabled = enabled;
-            }
-            // Disable/enable ball physics
-            if (ballRigidbody != null)
-                ballRigidbody.isKinematic = !enabled;
-        }
-
-        void UpdateReplayBuffer()
-        {
-            if (isReplaying) return;
-            if (Time.time - lastReplaySampleTime >= replaySampleInterval)
-            {
-                var players = new List<ObjectState>();
-                foreach (var t in playerTransforms)
-                    players.Add(new ObjectState(t.position, t.rotation));
-                var camState = new ObjectState(cameraTransform.position, cameraTransform.rotation);
-                var ballState = new ObjectState(ballTransform.position, ballTransform.rotation);
-                var leftLegs = new List<ObjectState>();
-                if (leftLegTransforms != null)
-                    foreach (var t in leftLegTransforms)
-                        leftLegs.Add(new ObjectState(t.position, t.rotation));
-                var rightLegs = new List<ObjectState>();
-                if (rightLegTransforms != null)
-                    foreach (var t in rightLegTransforms)
-                        rightLegs.Add(new ObjectState(t.position, t.rotation));
-                replayBuffer.Enqueue(new ReplayFrame(Time.time, camState, players, ballState, leftLegs, rightLegs));
-                lastReplaySampleTime = Time.time;
-                // Remove old frames
-                while (replayBuffer.Count > 0 && replayBuffer.Peek().time < Time.time - replayBufferLength)
-                    replayBuffer.Dequeue();
-            }
-        }
-
-        public void StartReplayAfterGoal()
-        {
-            MelonCoroutines.Start(ReplayCoroutine());
-        }
-
-        private IEnumerator ReplayCoroutine()
-        {
-            yield return new WaitForSeconds(3f); // Wait 3 seconds after goal
-            StartReplay();
-            yield return new WaitForSeconds(replayBufferLength); // Play replay for 10 seconds
-            EndReplay();
-        }
-
-        void StartReplay()
-        {
-            isReplaying = true;
-            replayFrames = new List<ReplayFrame>(replayBuffer);
-            replayStartTime = Time.time;
-            // Disable Photon sync and controls here
-            SetPhotonSync(false);
-            SetPlayerControl(false);
-        }
-
-        void EndReplay()
-        {
-            isReplaying = false;
-            // Re-enable Photon sync and controls here
-            SetPhotonSync(true);
-            SetPlayerControl(true);
-        }
-
-        void PlayReplay()
-        {
-            if (!isReplaying || replayFrames.Count == 0) return;
-            float elapsed = Time.time - replayStartTime;
-            if (elapsed > replayBufferLength)
-            {
-                isReplaying = false;
-                EndReplay();
-                return;
-            }
-            float tNorm = elapsed / replayBufferLength;
-            int idx = Mathf.FloorToInt(tNorm * (replayFrames.Count - 1));
-            int nextIdx = Mathf.Min(idx + 1, replayFrames.Count - 1);
-            ReplayFrame a = replayFrames[idx];
-            ReplayFrame b = replayFrames[nextIdx];
-            float t = Mathf.InverseLerp(a.time, b.time, a.time + elapsed);
-            // Camera
-            cameraTransform.position = Vector3.Lerp(a.cameraState.position, b.cameraState.position, t);
-            cameraTransform.rotation = Quaternion.Slerp(a.cameraState.rotation, b.cameraState.rotation, t);
-            // Players
-            for (int i = 0; i < playerTransforms.Count; i++)
-            {
-                if (i < a.playerStates.Count && i < b.playerStates.Count)
-                {
-                    playerTransforms[i].position = Vector3.Lerp(a.playerStates[i].position, b.playerStates[i].position, t);
-                    playerTransforms[i].rotation = Quaternion.Slerp(a.playerStates[i].rotation, b.playerStates[i].rotation, t);
-                }
-            }
-            // Ball
-            if (a.ballState != null && b.ballState != null)
-            {
-                ballTransform.position = Vector3.Lerp(a.ballState.position, b.ballState.position, t);
-                ballTransform.rotation = Quaternion.Slerp(a.ballState.rotation, b.ballState.rotation, t);
-            }
-            // Left Legs
-            if (leftLegTransforms != null)
-            {
-                for (int i = 0; i < leftLegTransforms.Count; i++)
-                {
-                    if (i < a.leftLegStates.Count && i < b.leftLegStates.Count)
-                    {
-                        leftLegTransforms[i].position = Vector3.Lerp(a.leftLegStates[i].position, b.leftLegStates[i].position, t);
-                        leftLegTransforms[i].rotation = Quaternion.Slerp(a.leftLegStates[i].rotation, b.leftLegStates[i].rotation, t);
-                    }
-                }
-            }
-            // Right Legs
-            if (rightLegTransforms != null)
-            {
-                for (int i = 0; i < rightLegTransforms.Count; i++)
-                {
-                    if (i < a.rightLegStates.Count && i < b.rightLegStates.Count)
-                    {
-                        rightLegTransforms[i].position = Vector3.Lerp(a.rightLegStates[i].position, b.rightLegStates[i].position, t);
-                        rightLegTransforms[i].rotation = Quaternion.Slerp(a.rightLegStates[i].rotation, b.rightLegStates[i].rotation, t);
-                    }
-                }
-            }
-        }
-
-        // Call this in your Update()
-        void HandleReplayManagement()
-        {
-            if (!isReplaying)
-                UpdateReplayBuffer();
-            else
-                PlayReplay();
-        }
-        #endregion
     }
 }
