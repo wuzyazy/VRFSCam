@@ -22,18 +22,125 @@ using System.Reflection;
 using UniverseLib;
 using Button = UnityEngine.UI.Button;
 using UnityEngine.EventSystems;
+using System.Runtime.InteropServices;
 
-[assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.4", "seby", null)]
+[assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.5", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
 
 namespace VRFSCam
 {
     public class Core : MelonMod
     {
+        #region Windows API
+        // Windows API imports for window management
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr CreateWindowEx(
+        uint dwExStyle,
+        [MarshalAs(UnmanagedType.LPStr)] string lpClassName,
+        [MarshalAs(UnmanagedType.LPStr)] string lpWindowName,
+        uint dwStyle,
+        int x,
+        int y,
+        int nWidth,
+        int nHeight,
+        IntPtr hWndParent,
+        IntPtr hMenu,
+        IntPtr hInstance,
+        IntPtr lpParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool DestroyWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr RegisterClass(ref WNDCLASS lpWndClass);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern short UnregisterClass([MarshalAs(UnmanagedType.LPStr)] string lpClassName, IntPtr hInstance);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WNDCLASS
+        {
+            public uint style;
+            public IntPtr lpfnWndProc;
+            public int cbClsExtra;
+            public int cbWndExtra;
+            public IntPtr hInstance;
+            public IntPtr hIcon;
+            public IntPtr hCursor;
+            public IntPtr hbrBackground;
+            [MarshalAs(UnmanagedType.LPStr)] public string lpszMenuName;
+            [MarshalAs(UnmanagedType.LPStr)] public string lpszClassName;
+        }
+
+        private IntPtr windowHandle = IntPtr.Zero;
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetDC(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr CreateCompatibleDC(IntPtr hDC);
+
+        [DllImport("gdi32.dll")]
+        private static extern bool DeleteDC(IntPtr hDC);
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr CreateDIBSection(IntPtr hDC, ref BITMAPINFO bmi, uint usage, out IntPtr bits, IntPtr hSection, uint offset);
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
+
+        [DllImport("gdi32.dll")]
+        private static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int width, int height, IntPtr hdcSrc, int xSrc, int ySrc, uint rop);
+
+        private const uint SRCCOPY = 0x00CC0020;
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct BITMAPINFOHEADER
+        {
+            public uint biSize;
+            public int biWidth;
+            public int biHeight;
+            public ushort biPlanes;
+            public ushort biBitCount;
+            public uint biCompression;
+            public uint biSizeImage;
+            public int biXPelsPerMeter;
+            public int biYPelsPerMeter;
+            public uint biClrUsed;
+            public uint biClrImportant;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct BITMAPINFO
+        {
+            public BITMAPINFOHEADER bmiHeader;
+            public uint bmiColors;
+        }
+
+
+       
+
+
+
+        [DllImport("kernel32.dll")]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+
+        private bool windowCreated = false; // Flag to track window creation
+
+        #endregion Windows API
+
         #region Constants
         public const string Version = "0.0.5";
         private const string DiscordAppId = "1354484678748409966";
         private const string BallObjectPrefix = "BallSingle(Clone)";
+        private const string WINDOW_CLASS_NAME = "VRFSCam+WindowClass";
         #endregion
 
         #region Private Fields
@@ -80,6 +187,10 @@ namespace VRFSCam
         // Error tracking to prevent log spam
         private bool _ballLayerWarningShown = false;
         private bool _discordAssemblyErrorLogged = false; // Flag to track if assembly load error was logged
+
+        // Window management
+        private RenderTexture renderTexturecam1;
+        private Texture2D Texture2Dcam1;
         #endregion
 
         #region Public Properties
@@ -102,6 +213,10 @@ namespace VRFSCam
 
         public static Button simplejerseybtn;
 
+        public static Button enablecam1;
+
+        public static bool isCam1Active = false;
+
         public static bool isSimpleJerseyActive = false;
 
         public static TextMeshProUGUI simplejerseyActivatedText;
@@ -114,6 +229,8 @@ namespace VRFSCam
 
         public static AudioClip hovers;
         public static AudioClip clicks;
+
+        public static Camera activecam1;
 
         public static bool isMenuActive = false;
 
@@ -379,7 +496,7 @@ namespace VRFSCam
                 }
             }
         }
-        
+
         private IEnumerator LoadUI()
         {
             // Skip if UI is already initialized
@@ -391,7 +508,10 @@ namespace VRFSCam
             // UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/742imh.asset"); Old UI v0.1
             //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/u8hqev.asset");  New UI v0.2
             //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/s3rj8y.asset"); // New UI v0.3 -- fixed panel size
-            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/kf79va.asset"); // New UI v0.4 -- new colors, added pages
+            // UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/kf79va.asset"); // New UI v0.4 -- new colors, added pages
+
+            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/mxhzrx.asset"); // New UI v0.5 -- new camera 1
+
             yield return uwr.SendWebRequest();
 
             if (uwr.result != UnityWebRequest.Result.Success)
@@ -415,14 +535,14 @@ namespace VRFSCam
             }
 
 
-         //   AudioClip hover = bundle.LoadAsset<AudioClip>("hover");
+            //   AudioClip hover = bundle.LoadAsset<AudioClip>("hover");
             if (prefab == null)
             {
                 Debug.LogError("prefab not found in assetbundle");
                 yield break;
             }
 
-          //  AudioClip click = bundle.LoadAsset<AudioClip>("click");
+            //  AudioClip click = bundle.LoadAsset<AudioClip>("click");
             if (prefab == null)
             {
                 Debug.LogError("prefab not found in assetbundle");
@@ -436,19 +556,19 @@ namespace VRFSCam
 
             prefab.SetActive(false);
 
-           // UnityEngine.Object.DontDestroyOnLoad(hovers);
-           // UnityEngine.Object.DontDestroyOnLoad(clicks);
+            // UnityEngine.Object.DontDestroyOnLoad(hovers);
+            // UnityEngine.Object.DontDestroyOnLoad(clicks);
 
             UIobj.SetActive(false);
 
             UnityEngine.Object.DontDestroyOnLoad(UIobj);
 
-            
+            InitializeCam1();
 
             resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
 
             zoomfactortext = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/zoomfactorvalue").GetComponent<TextMeshProUGUI>();
-       
+
             resetdistancebtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetdistancebtn").GetComponent<UnityEngine.UI.Button>();
 
             simplejerseybtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/simplejerseybtn").GetComponent<UnityEngine.UI.Button>();
@@ -458,6 +578,8 @@ namespace VRFSCam
             nextbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/nextbtn").GetComponent<UnityEngine.UI.Button>();
 
             backbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/backbtn").GetComponent<UnityEngine.UI.Button>();
+
+            enablecam1 = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/enablecam1").GetComponent<UnityEngine.UI.Button>();
 
             zoomfactorslider = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/zoomfactorslider").GetComponent<Slider>();
 
@@ -478,7 +600,7 @@ namespace VRFSCam
 
             distancetomaxslider = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/distancetomaxslider").GetComponent<Slider>();
 
-            distancetomaxslider.maxValue = 250f;    
+            distancetomaxslider.maxValue = 250f;
 
             distancetomaxslider.onValueChanged.AddListener((UnityAction<float>)delegate (float value)
             {
@@ -495,12 +617,12 @@ namespace VRFSCam
                 zoomfactorslider.value = _zoomFactor;
 
             });
-            
-           
 
 
 
-            resetdistancebtn.onClick.AddListener(() => 
+
+
+            resetdistancebtn.onClick.AddListener(() =>
             {
                 _maxZoomDistance = 110f;
                 distancetomaxvalue.text = _maxZoomDistance.ToString("F1");
@@ -540,11 +662,24 @@ namespace VRFSCam
                 simplejerseybtn.GetComponent<Image>().color = isSimpleJerseyActive ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.2f, 0.2f);
             });
 
+            enablecam1.onClick.AddListener(() =>
+            {
+                isCam1Active = !isCam1Active;
+                if (isCam1Active)
+                {
+                    enablecam1.GetComponent<Image>().color = new Color(0.2f, 0.8f, 0.2f);
+                    enablecam1.GetComponentInChildren<TextMeshProUGUI>().text = "DISABLE CAM 1";
+                }
+                else
+                {
+                    enablecam1.GetComponent<Image>().color = new Color(0.8f, 0.2f, 0.2f);
+                    enablecam1.GetComponentInChildren<TextMeshProUGUI>().text = "ENABLE CAM 1";
+                };
 
 
+                CreateWindowWithCam1();
 
-
-
+            });
 
 
 
@@ -558,10 +693,11 @@ namespace VRFSCam
 
             bundle.Unload(false);
 
-            // Mark UI as initialized
-            _GUIInitialized = true;
-        }
+                // Mark UI as initialized
+                _GUIInitialized = true;
 
+
+            }
 
 
         
@@ -570,6 +706,14 @@ namespace VRFSCam
         public void OnResetZoomButtonClick()
         {
             MelonLogger.Msg("[VRFSCam+] [UI] Reset Zoom Button clicked!");
+        }
+
+        private IntPtr CreateWindow()
+        {
+            // Ensure you have a valid window handle
+            IntPtr hInstance = GetModuleHandle(null); // Get the current module (application)
+            IntPtr hWnd = CreateWindowEx(0, "MyWindowClass", "Unity Camera Window", 0x80000000, 100, 100, 800, 600, IntPtr.Zero, IntPtr.Zero, hInstance, IntPtr.Zero);
+            return hWnd;
         }
 
         private void CreateText()
@@ -733,6 +877,7 @@ namespace VRFSCam
 
                 HandleCameraControls();
                 HandleMainModeToggle();
+                HandleCam1();
 
                 // Only attempt Discord update if it's available
                 if (_discordAvailable)
@@ -829,7 +974,43 @@ namespace VRFSCam
                 LoggerInstance.Warning($"Error handling main mode toggle: {ex.Message}");
             }
         }
+        private void HandleCam1()
+        {
+            try
+            {
+                if (!windowCreated)
+                {
+                    Debug.LogError("Window is not created yet.");
+                    return;
+                }
 
+                // Proceed with rendering only if the window is created
+                byte[] imageBytes = Texture2Dcam1.GetRawTextureData();
+                if (imageBytes != null)
+                {
+                    RenderToWindow(imageBytes, 800, 600);
+                }
+            }
+            catch (Exception ex)
+            {
+                LoggerInstance.Warning($"Error handling Cam1: {ex.Message}");
+            }
+        }
+
+        private void CreateWindowWithCam1()
+        {
+            windowHandle = CreateWindow();
+
+            if (windowHandle != IntPtr.Zero)
+            {
+                windowCreated = true;
+                Debug.Log("Window created successfully!");
+            }
+            else
+            {
+                Debug.LogError("Failed to create window.");
+            }
+        }
         private void ToggleMenu()
         {
             if (UIobj == null) return;
@@ -955,6 +1136,160 @@ namespace VRFSCam
         }
         #endregion
 
+        #region Multiple-Camera Support
+
+        private void InitializeCam1()
+        {
+            try
+            {
+                GameObject camera = new GameObject("Cam1GoalPostRed");
+                UnityEngine.Object.DontDestroyOnLoad(camera);
+                camera.AddComponent<Camera>();
+                activecam1 = camera.GetComponent<Camera>();
+                camera.tag = "Untagged";
+                camera.transform.SetPositionAndRotation(new Vector3(100.3993f, 2.5074f, -3.5727f), Quaternion.Euler(29.6446f, 312f, 0f));
+                camera.transform.localScale = Vector3.one;
+                camera.GetComponent<Camera>().fieldOfView = 80f;
+                renderTexturecam1 = new RenderTexture(800, 600, 24);
+                renderTexturecam1.Create();
+
+                activecam1.targetTexture = renderTexturecam1;
+
+                Texture2Dcam1 = UniverseLib.Runtime.TextureHelper.NewTexture2D(renderTexturecam1.width, renderTexturecam1.height, TextureFormat.RGB24, false);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                LoggerInstance.Warning($"Error initializing camera: {ex.Message}");
+            }
+        }
+
+        public byte[] GetCameraImage()
+        {
+            RenderTexture.active = renderTexturecam1;
+            activecam1.Render();
+            Texture2Dcam1.ReadPixels(new Rect(0, 0, renderTexturecam1.width, renderTexturecam1.height), 0, 0);
+            Texture2Dcam1.Apply();
+            RenderTexture.active = null;
+            byte[] imageBytes = Texture2Dcam1.GetRawTextureData();
+            return imageBytes;
+
+        }
+
+
+
+
+
+        #endregion Multiple-Camera Support
+
+        #region Windows Rendering System
+
+
+        private void CreateOSWindow(string title, int width, int height)
+        {
+            WNDCLASS windowClass = new WNDCLASS
+            {
+                style = 0,
+                lpfnWndProc = Marshal.GetFunctionPointerForDelegate(new WndProcDelegate(DefWindowProc)),
+                cbClsExtra = 0,
+                cbWndExtra = 0,
+                hInstance = IntPtr.Zero,
+                hIcon = IntPtr.Zero,
+                hCursor = IntPtr.Zero,
+                hbrBackground = IntPtr.Zero,
+                lpszMenuName = null,
+                lpszClassName = WINDOW_CLASS_NAME
+            };
+
+            RegisterClass(ref windowClass);
+
+            windowHandle = CreateWindowEx(
+             0,
+             WINDOW_CLASS_NAME,
+             title,
+             0x10CF0000, // WS_OVERLAPPEDWINDOW | WS_VISIBLE
+             100, 100,
+             width, height,
+             IntPtr.Zero,
+             IntPtr.Zero,
+             IntPtr.Zero,
+             IntPtr.Zero);
+
+            if (windowHandle == IntPtr.Zero)
+            {
+                Debug.LogError("Failed to create window!");
+            }
+            else
+            {
+                Debug.Log("Window created successfully.");
+            }
+
+            
+        }
+
+
+        private void DestroyOSWindow()
+        {
+            if (windowHandle != IntPtr.Zero)
+            {
+                DestroyWindow(windowHandle);
+                UnregisterClass(WINDOW_CLASS_NAME, IntPtr.Zero);
+                windowHandle = IntPtr.Zero;
+                Debug.Log("Window destroyed successfully.");
+            }
+            else
+            {
+                Debug.LogError("No window to destroy.");
+            }
+        }
+
+        private void RenderToWindow(byte[] imageData, int width, int height)
+        {
+            IntPtr hDC = GetDC(windowHandle);
+            if (hDC == IntPtr.Zero)
+            {
+                Debug.LogError("Failed to get device context!");
+                return;
+            }
+
+            BITMAPINFO bmi = new BITMAPINFO
+            {
+                bmiHeader = new BITMAPINFOHEADER
+                {
+                    biSize = (uint)Marshal.SizeOf(typeof(BITMAPINFOHEADER)),
+                    biWidth = width,
+                    biHeight = -height, // Negative height for top-down bitmap
+                    biPlanes = 1,
+                    biBitCount = 24,
+                    biCompression = 0,
+                    biSizeImage = 0,
+                    biXPelsPerMeter = 0,
+                    biYPelsPerMeter = 0,
+                    biClrUsed = 0,
+                    biClrImportant = 0
+                },
+                bmiColors = 0
+            };
+
+            IntPtr bits;
+            IntPtr hBitmap = CreateDIBSection(hDC, ref bmi, 0, out bits, IntPtr.Zero, 0);
+            Marshal.Copy(imageData, 0, bits, imageData.Length);
+
+            IntPtr memoryDC = CreateCompatibleDC(hDC);
+            SelectObject(memoryDC, hBitmap);
+
+            BitBlt(hDC, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
+
+            DeleteDC(memoryDC);
+            ReleaseDC(windowHandle, hDC);
+        }
+
+
+        #endregion Windows Rendering System
+
+
 
         #region Helper Methods
         // Helper to log assembly errors only once
@@ -996,6 +1331,6 @@ namespace VRFSCam
         }
         #endregion
 
-
+        private delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
     }
 }
