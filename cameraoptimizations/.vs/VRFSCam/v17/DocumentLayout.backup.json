@@ -7,12 +7,12 @@
       "RelativeMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|solutionrelative:cameraoptimizations\\core.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|c:\\users\\seby\\documents\\github\\vrfscam\\cameraoptimizations\\cameraoptimizations\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|solutionrelative:cameraoptimizations\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|c:\\users\\seby\\documents\\github\\vrfscam\\cameraoptimizations\\cameraoptimizations\\vrfscam.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|solutionrelative:cameraoptimizations\\vrfscam.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|c:\\users\\seby\\documents\\github\\vrfscam\\cameraoptimizations\\cameraoptimizations\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{327BD1B1-B2CC-499D-BC17-67F9C3F00CDD}|cameraoptimizations\\VRFSCam.csproj|solutionrelative:cameraoptimizations\\harmonypatches.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,19 +26,20 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "VRFSCam.csproj",
               "DocumentMoniker": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
               "RelativeDocumentMoniker": "cameraoptimizations\\VRFSCam.csproj",
               "ToolTip": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\VRFSCam.csproj",
               "RelativeToolTip": "cameraoptimizations\\VRFSCam.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAK8BAAAAfH19fX0vwMABAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-13T11:33:14.446Z"
+              "WhenOpened": "2025-04-13T11:33:14.446Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "HarmonyPatches.cs",
               "DocumentMoniker": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\HarmonyPatches.cs",
               "RelativeDocumentMoniker": "cameraoptimizations\\HarmonyPatches.cs",
@@ -56,7 +57,7 @@
               "RelativeDocumentMoniker": "cameraoptimizations\\Core.cs",
               "ToolTip": "C:\\Users\\seby\\Documents\\GitHub\\VRFSCam\\cameraoptimizations\\cameraoptimizations\\Core.cs",
               "RelativeToolTip": "cameraoptimizations\\Core.cs",
-              "ViewState": "AgIAAHYCAAAAAAAAAAAlwMECAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAIcDAAAAAAAAAAD4v5kDAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-09T17:33:39.389Z",
               "EditorCaption": ""

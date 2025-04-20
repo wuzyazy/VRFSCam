@@ -124,9 +124,9 @@ namespace VRFSCam
         }
 
 
-       
 
 
+        private WndProcDelegate wndProcRef;
 
         [DllImport("kernel32.dll")]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -191,6 +191,11 @@ namespace VRFSCam
         // Window management
         private RenderTexture renderTexturecam1;
         private Texture2D Texture2Dcam1;
+
+        private int camWindowWidth = 400;
+        private int camWindowHeight = 300;
+        private float lastCamUpdateTime = 0f;
+        private const float CamUpdateIntervalSeconds = 1f / 10f; // 10 FPS for camera window
         #endregion
 
         #region Public Properties
@@ -510,7 +515,7 @@ namespace VRFSCam
             //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/s3rj8y.asset"); // New UI v0.3 -- fixed panel size
             // UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/kf79va.asset"); // New UI v0.4 -- new colors, added pages
 
-            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/mxhzrx.asset"); // New UI v0.5 -- new camera 1
+            UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/92qa7b.asset"); // New UI v0.5 -- simple jerseys
 
             yield return uwr.SendWebRequest();
 
@@ -534,6 +539,13 @@ namespace VRFSCam
                 yield break;
             }
 
+          //  GameObject map = bundle.LoadAsset<GameObject>("map");
+        //    if (map == null)
+        //    {
+        //        Debug.LogError("map not found in assetbundle");
+       //         yield break;
+       //     }
+
 
             //   AudioClip hover = bundle.LoadAsset<AudioClip>("hover");
             if (prefab == null)
@@ -556,6 +568,12 @@ namespace VRFSCam
 
             prefab.SetActive(false);
 
+          // var mapinstantiated = GameObject.Instantiate(map);
+         //   map.SetActive(false);
+         //   UnityEngine.Object.DontDestroyOnLoad(mapinstantiated);
+         //   var models = GameObject.Find("Models");
+         //   UnityEngine.Object.Destroy(models);
+
             // UnityEngine.Object.DontDestroyOnLoad(hovers);
             // UnityEngine.Object.DontDestroyOnLoad(clicks);
 
@@ -563,7 +581,7 @@ namespace VRFSCam
 
             UnityEngine.Object.DontDestroyOnLoad(UIobj);
 
-            InitializeCam1();
+         //   InitializeCam1();
 
             resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
 
@@ -580,6 +598,7 @@ namespace VRFSCam
             backbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/backbtn").GetComponent<UnityEngine.UI.Button>();
 
             enablecam1 = UIobj.transform.Find("VRFSCamPanel/SettingsPage2/enablecam1").GetComponent<UnityEngine.UI.Button>();
+            UnityEngine.Object.Destroy(enablecam1.gameObject);
 
             zoomfactorslider = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/zoomfactorslider").GetComponent<Slider>();
 
@@ -589,6 +608,7 @@ namespace VRFSCam
             settingspage2 = UIobj.transform.Find("VRFSCamPanel/SettingsPage2").gameObject;
 
             zoomfactorslider.maxValue = 2.5f;
+
 
             zoomfactorslider.onValueChanged.AddListener((UnityAction<float>)delegate (float value)
             {
@@ -609,6 +629,8 @@ namespace VRFSCam
             });
 
             // Behold the Initialization of Buttons...
+
+            // CreateWindowWithCam1();
 
             resetzoomfactorbtn.onClick.AddListener(() =>
             {
@@ -657,34 +679,17 @@ namespace VRFSCam
 
                 }
                 isSimpleJerseyActive = !isSimpleJerseyActive;
-                activetshirtSettingsChanger.sky = isSimpleJerseyActive;
+                activetshirtSettingsChanger.vgf = isSimpleJerseyActive;
                 simplejerseyActivatedText.text = isSimpleJerseyActive ? "DISABLE SIMPLE JERSEYS" : "ENABLE SIMPLE JERSEYS";
                 simplejerseybtn.GetComponent<Image>().color = isSimpleJerseyActive ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.2f, 0.2f);
             });
 
-            enablecam1.onClick.AddListener(() =>
-            {
-                isCam1Active = !isCam1Active;
-                if (isCam1Active)
-                {
-                    enablecam1.GetComponent<Image>().color = new Color(0.2f, 0.8f, 0.2f);
-                    enablecam1.GetComponentInChildren<TextMeshProUGUI>().text = "DISABLE CAM 1";
-                }
-                else
-                {
-                    enablecam1.GetComponent<Image>().color = new Color(0.8f, 0.2f, 0.2f);
-                    enablecam1.GetComponentInChildren<TextMeshProUGUI>().text = "ENABLE CAM 1";
-                };
-
-
-                CreateWindowWithCam1();
-
-            });
 
 
 
 
 
+            
 
 
 
@@ -710,10 +715,52 @@ namespace VRFSCam
 
         private IntPtr CreateWindow()
         {
-            // Ensure you have a valid window handle
-            IntPtr hInstance = GetModuleHandle(null); // Get the current module (application)
-            IntPtr hWnd = CreateWindowEx(0, "MyWindowClass", "Unity Camera Window", 0x80000000, 100, 100, 800, 600, IntPtr.Zero, IntPtr.Zero, hInstance, IntPtr.Zero);
-            return hWnd;
+            IntPtr hInstance = GetModuleHandle(null);
+            try
+            {
+                // Ensure the window procedure delegate is assigned and rooted
+                wndProcRef = DefWindowProc;
+
+                // Define the window class
+                WNDCLASS wndClass = new WNDCLASS
+                {
+                    style = 0,
+                    lpfnWndProc = Marshal.GetFunctionPointerForDelegate(wndProcRef),
+                    cbClsExtra = 0,
+                    cbWndExtra = 0,
+                    hInstance = hInstance,
+                    hIcon = IntPtr.Zero,
+                    hCursor = IntPtr.Zero,
+                    hbrBackground = IntPtr.Zero,
+                    lpszMenuName = null,
+                    lpszClassName = "MyWindowClass"
+                };
+                RegisterClass(ref wndClass);
+
+                // Use standard window styles for a visible, taskbar window
+                const uint WS_OVERLAPPEDWINDOW = 0x00CF0000;
+                const uint WS_VISIBLE = 0x10000000;
+                uint style = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
+
+                IntPtr hWnd = CreateWindowEx(
+                    0, // dwExStyle
+                    "MyWindowClass", // lpClassName
+                    "Unity Camera Window", // lpWindowName
+                    style, // dwStyle
+                    100, 100, camWindowWidth, camWindowHeight, // x, y, width, height
+                    IntPtr.Zero, // hWndParent
+                    IntPtr.Zero, // hMenu
+                    hInstance, // hInstance
+                    IntPtr.Zero // lpParam
+                );
+
+                return hWnd;
+            }
+            catch (Exception ex)
+            {
+                MelonLogger.Error($"Failed to create window: {ex.Message}");
+                return IntPtr.Zero;
+            }
         }
 
         private void CreateText()
@@ -742,7 +789,7 @@ namespace VRFSCam
 
                 _textObject = new GameObject("SebyText");
                 TextMeshPro = _textObject.AddComponent<TextMeshProUGUI>();
-                TextMeshPro.text = "VRFSCam+";
+                TextMeshPro.text = "";
                 TextMeshPro.fontSize = 36;
                 TextMeshPro.color = new Color(1f, 1f, 1f, 0.2f);
                 TextMeshPro.alignment = TextAlignmentOptions.BottomLeft;
@@ -773,10 +820,10 @@ namespace VRFSCam
                     var matchManager = multiplayer.GetComponent<MatchManager>();
                     if (matchManager != null)
                     {
-                        Ruleset = matchManager.oau; // obfuscated property
-                        RemainingMatchTime = matchManager.bbgp; // obfuscated property
+                        Ruleset = matchManager.pwy; // obfuscated property
+                        RemainingMatchTime = matchManager.beqd; // obfuscated property
 
-                        var scores = matchManager.obd.rhl;
+                        var scores = matchManager.pxh.tqj;
                         if (scores != null && scores.Length >= 2)
                         {
                             BlueScore = scores[0];
@@ -877,7 +924,7 @@ namespace VRFSCam
 
                 HandleCameraControls();
                 HandleMainModeToggle();
-                HandleCam1();
+               //  HandleCam1();
 
                 // Only attempt Discord update if it's available
                 if (_discordAvailable)
@@ -974,41 +1021,96 @@ namespace VRFSCam
                 LoggerInstance.Warning($"Error handling main mode toggle: {ex.Message}");
             }
         }
-        private void HandleCam1()
-        {
-            try
-            {
-                if (!windowCreated)
-                {
-                    Debug.LogError("Window is not created yet.");
-                    return;
-                }
+private void EnsureCameraTextures()
+{
+    // Ensure renderTexturecam1 and Texture2Dcam1 are allocated and valid
+    if (renderTexturecam1 == null || renderTexturecam1.width != camWindowWidth || renderTexturecam1.height != camWindowHeight)
+    {
+        renderTexturecam1 = new RenderTexture(camWindowWidth, camWindowHeight, 16, RenderTextureFormat.ARGB32);
+        renderTexturecam1.Create();
+        if (_mainCamera != null)
+            _mainCamera.targetTexture = renderTexturecam1;
+    }
+    if (Texture2Dcam1 == null || Texture2Dcam1.width != camWindowWidth || Texture2Dcam1.height != camWindowHeight)
+    {
+        Texture2Dcam1 = new Texture2D(camWindowWidth, camWindowHeight, TextureFormat.RGB24, false);
+    }
+}
 
-                // Proceed with rendering only if the window is created
-                byte[] imageBytes = Texture2Dcam1.GetRawTextureData();
-                if (imageBytes != null)
-                {
-                    RenderToWindow(imageBytes, 800, 600);
-                }
-            }
-            catch (Exception ex)
-            {
-                LoggerInstance.Warning($"Error handling Cam1: {ex.Message}");
-            }
+private void HandleCam1()
+{
+    try
+    {
+        // Limit camera updates to 10 FPS
+        if (Time.realtimeSinceStartup - lastCamUpdateTime < CamUpdateIntervalSeconds)
+            return;
+        lastCamUpdateTime = Time.realtimeSinceStartup;
+
+        if (!windowCreated)
+        {
+            MelonLogger.Error("Window is not created yet.");
+            return;
         }
+
+        EnsureCameraTextures(); // Robustly ensure textures exist every frame
+
+        if (Texture2Dcam1 == null)
+        {
+            MelonLogger.Error("Texture2Dcam1 is null!");
+            return;
+        }
+        if (windowHandle == IntPtr.Zero)
+        {
+            MelonLogger.Error("windowHandle is zero!");
+            return;
+        }
+        if (renderTexturecam1 == null)
+        {
+            MelonLogger.Error("renderTexturecam1 is null!");
+            return;
+        }
+
+        // Copy camera RenderTexture to Texture2Dcam1 each frame
+        RenderTexture prev = RenderTexture.active;
+        RenderTexture.active = renderTexturecam1;
+        Texture2Dcam1.ReadPixels(new UnityEngine.Rect(0, 0, camWindowWidth, camWindowHeight), 0, 0);
+        Texture2Dcam1.Apply();
+        RenderTexture.active = prev;
+
+        byte[] imageBytes = Texture2Dcam1.GetRawTextureData();
+        // Swap R and B channels for GDI (expects BGR, Unity gives RGB)
+        for (int i = 0; i < imageBytes.Length; i += 3)
+        {
+            byte temp = imageBytes[i];         // R
+            imageBytes[i] = imageBytes[i + 2]; // B
+            imageBytes[i + 2] = temp;          // R
+        }
+
+        if (imageBytes != null)
+        {
+            RenderToWindow(imageBytes, camWindowWidth, camWindowHeight);
+        }
+    }
+    catch (Exception ex)
+    {
+        LoggerInstance.Warning($"Error handling Cam1: {ex.Message}");
+    }
+}
 
         private void CreateWindowWithCam1()
         {
+            MelonLogger.Msg("Creating window");
             windowHandle = CreateWindow();
-
+            MelonLogger.Msg("created window handle");
             if (windowHandle != IntPtr.Zero)
             {
                 windowCreated = true;
-                Debug.Log("Window created successfully!");
+
+                MelonLogger.Msg("Window created successfully!");
             }
             else
             {
-                Debug.LogError("Failed to create window.");
+                MelonLogger.Error("Failed to create window.");
             }
         }
         private void ToggleMenu()
@@ -1147,17 +1249,31 @@ namespace VRFSCam
                 camera.AddComponent<Camera>();
                 activecam1 = camera.GetComponent<Camera>();
                 camera.tag = "Untagged";
-                camera.transform.SetPositionAndRotation(new Vector3(100.3993f, 2.5074f, -3.5727f), Quaternion.Euler(29.6446f, 312f, 0f));
+                camera.transform.SetPositionAndRotation(new Vector3(100.3993f, 2.5074f, -3.5727f), Quaternion.Euler(29.6446f, 312f, 180f));
                 camera.transform.localScale = Vector3.one;
-                camera.GetComponent<Camera>().fieldOfView = 80f;
-                renderTexturecam1 = new RenderTexture(800, 600, 24);
+                activecam1.fieldOfView = 80f;
+                renderTexturecam1 = new RenderTexture(camWindowWidth, camWindowHeight, 16);
                 renderTexturecam1.Create();
 
                 activecam1.targetTexture = renderTexturecam1;
 
                 Texture2Dcam1 = UniverseLib.Runtime.TextureHelper.NewTexture2D(renderTexturecam1.width, renderTexturecam1.height, TextureFormat.RGB24, false);
 
-
+                // --- Set camera properties for best performance ---
+                activecam1.allowMSAA = false; // Disable multi-sample anti-aliasing
+                activecam1.allowHDR = false; // Disable HDR rendering
+                activecam1.useOcclusionCulling = false; // Disable occlusion culling
+                activecam1.depthTextureMode = DepthTextureMode.None; // No depth/normals textures
+                activecam1.stereoTargetEye = StereoTargetEyeMask.None; // Disable VR stereo rendering
+                activecam1.clearFlags = CameraClearFlags.SolidColor; // Use solid color for fastest clear
+                activecam1.backgroundColor = Color.black; // Black background
+                
+                // Optionally, set very low near/far clip plane range if possible
+                activecam1.nearClipPlane = 0.3f;
+                activecam1.farClipPlane = 1000f;
+                // Optionally, set rendering path to Forward for best compatibility/performance
+                activecam1.renderingPath = RenderingPath.Forward;
+                // --- End camera property optimization ---
 
             }
             catch (Exception ex)
@@ -1219,11 +1335,11 @@ namespace VRFSCam
 
             if (windowHandle == IntPtr.Zero)
             {
-                Debug.LogError("Failed to create window!");
+                MelonLogger.Error("Failed to create window!");
             }
             else
             {
-                Debug.Log("Window created successfully.");
+                MelonLogger.Error("Window created successfully.");
             }
 
             
@@ -1250,7 +1366,7 @@ namespace VRFSCam
             IntPtr hDC = GetDC(windowHandle);
             if (hDC == IntPtr.Zero)
             {
-                Debug.LogError("Failed to get device context!");
+                MelonLogger.Error("Failed to get device context!");
                 return;
             }
 

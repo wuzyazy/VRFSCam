@@ -1940,6 +1940,30 @@
           }
         }
       },
+      "Il2CppMeta.Movement/0.0.0.0": {
+        "runtime": {
+          "Il2CppMeta.Movement.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Il2Cppmeta.xr.mrutilitykit/0.0.0.0": {
+        "runtime": {
+          "Il2Cppmeta.xr.mrutilitykit.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Unity.AI.Navigation/0.0.0.0": {
+        "runtime": {
+          "Unity.AI.Navigation.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "bHapticsLib/1.0.6.0": {
         "runtime": {
           "bHapticsLib.dll": {
@@ -2025,6 +2049,14 @@
           "Il2CppInterop.HarmonySupport.dll": {
             "assemblyVersion": "1.4.6.0",
             "fileVersion": "1.4.6.0"
+          }
+        }
+      },
+      "Unity.Animation.Rigging/0.0.0.0": {
+        "runtime": {
+          "Unity.Animation.Rigging.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -3356,6 +3388,21 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Il2CppMeta.Movement/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Il2Cppmeta.xr.mrutilitykit/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Unity.AI.Navigation/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "bHapticsLib/1.0.6.0": {
       "type": "reference",
       "serviceable": false,
@@ -3407,6 +3454,11 @@
       "sha512": ""
     },
     "Il2CppInterop.HarmonySupport/1.4.6.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Unity.Animation.Rigging/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

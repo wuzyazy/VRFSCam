@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
@@ -15,11 +15,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="Assembly-CSharp-firstpass">
-			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
-		</Reference>
 		<Reference Include="Assembly-CSharp">
-			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+		  <HintPath>D:\VRFS_Camera_055\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="Assembly-CSharp-firstpass">
+		  <HintPath>D:\VRFS_Camera_055\MelonLoader\Il2CppAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
 		</Reference>
 		<Reference Include="Il2CppAVProVideo.Demos">
 			<HintPath>D:\VRFS_Camera_051\MelonLoader\Il2CppAssemblies\Il2CppAVProVideo.Demos.dll</HintPath>
@@ -446,6 +446,6 @@
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="COPY &quot;$(TargetPath)&quot; &quot;D:\VRFS_Camera_051\Mods&quot;" />
+		<Exec Command="COPY &quot;$(TargetPath)&quot; &quot;D:\VRFS_Camera_055\Mods&quot;" />
 	</Target>
 </Project>
