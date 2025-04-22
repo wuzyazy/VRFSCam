@@ -510,3 +510,5 @@ C:\Users\seby\Documents\GitHub\VRFSCam\cameraoptimizations\cameraoptimizations\b
 C:\Users\seby\Documents\GitHub\VRFSCam\cameraoptimizations\cameraoptimizations\bin\Debug\net6.0\Il2Cppmeta.xr.mrutilitykit.dll
 C:\Users\seby\Documents\GitHub\VRFSCam\cameraoptimizations\cameraoptimizations\bin\Debug\net6.0\Unity.AI.Navigation.dll
 C:\Users\seby\Documents\GitHub\VRFSCam\cameraoptimizations\cameraoptimizations\bin\Debug\net6.0\Unity.Animation.Rigging.dll
+C:\Users\seby\Documents\GitHub\VRFSCam\cameraoptimizations\cameraoptimizations\obj\Debug\net6.0\VRFSCam.AssetBundles.resources
+C:\Users\seby\Documents\GitHub\VRFSCam\cameraoptimizations\cameraoptimizations\obj\Debug\net6.0\VRFSCam.csproj.GenerateResource.cache

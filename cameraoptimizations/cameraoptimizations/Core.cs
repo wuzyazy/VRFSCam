@@ -1,4 +1,4 @@
-using DiscordRPC;
+﻿using DiscordRPC;
 using DiscordRPC.Logging;
 using HarmonyLib;
 using Il2Cpp;
@@ -23,6 +23,7 @@ using UniverseLib;
 using Button = UnityEngine.UI.Button;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
+using UnityEngine.Video;
 
 [assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.5", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
@@ -31,6 +32,14 @@ namespace VRFSCam
 {
     public class Core : MelonMod
     {
+        #region Intro Config
+        // ─── CONFIG ─────────────────────────────────────────────────────────────
+        private const string NextSceneName = "SB"; // Must be in Build Settings
+        private UnityEngine.AssetBundle introassets;
+        private UnityEngine.AssetBundle introscene;
+        // ────────────────────────────────────────────────────────────────────────
+        #endregion
+
         #region Windows API
         // Windows API imports for window management
         [DllImport("user32.dll", SetLastError = true)]
@@ -192,8 +201,8 @@ namespace VRFSCam
         private RenderTexture renderTexturecam1;
         private Texture2D Texture2Dcam1;
 
-        private int camWindowWidth = 400;
-        private int camWindowHeight = 300;
+        private int camWindowWidth = 256;
+        private int camWindowHeight = 144;
         private float lastCamUpdateTime = 0f;
         private const float CamUpdateIntervalSeconds = 1f / 10f; // 10 FPS for camera window
         #endregion
@@ -271,7 +280,9 @@ namespace VRFSCam
         public override void OnInitializeMelon()
         {
             LoggerInstance.Msg($"VRFSCam+ {Version} by Seby");
-
+            introassets = UnityEngine.AssetBundle.LoadFromMemory(VRFSCam.AssetBundles.introassets);
+            introscene = UnityEngine.AssetBundle.LoadFromMemory(VRFSCam.AssetBundles.introscene);
+            
             try
             {
                 InitializeDiscordRPC();
@@ -307,6 +318,7 @@ namespace VRFSCam
 
         public override void OnLateInitializeMelon()
         {
+            StartSceneSequence();
             try
             {
                 Keyboard = Keyboard.current;
@@ -315,6 +327,7 @@ namespace VRFSCam
                     LoggerInstance.Warning("Keyboard input not available. Some features may not work correctly.");
                 }
                 CheckText();
+                
                 _currentOffset = new Vector3(0, _offsetHeight, -_baseOffsetDistance);
             }
             catch (Exception ex)
@@ -514,18 +527,19 @@ namespace VRFSCam
             //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/u8hqev.asset");  New UI v0.2
             //  UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/s3rj8y.asset"); // New UI v0.3 -- fixed panel size
             // UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/kf79va.asset"); // New UI v0.4 -- new colors, added pages
-
+            /*
             UnityWebRequest uwr = UnityWebRequest.Get("https://files.catbox.moe/92qa7b.asset"); // New UI v0.5 -- simple jerseys
 
             yield return uwr.SendWebRequest();
 
             if (uwr.result != UnityWebRequest.Result.Success)
             {
-                Debug.LogError($"failed to download AssetBundle: {uwr.error}");
+                Debug.LogError($"failed to download AssetBundle: {uwr.error}");   -- Removed the need of networking since all of the assets are in the DLL
                 yield break;
             }
+            */
 
-            UnityEngine.AssetBundle bundle = UnityEngine.AssetBundle.LoadFromMemory(uwr.downloadHandler.data);
+            UnityEngine.AssetBundle bundle = UnityEngine.AssetBundle.LoadFromMemory(VRFSCam.AssetBundles.vrfscam);
             if (bundle == null)
             {
                 Debug.LogError("failed to load assetbundle");
@@ -581,7 +595,7 @@ namespace VRFSCam
 
             UnityEngine.Object.DontDestroyOnLoad(UIobj);
 
-         //   InitializeCam1();
+          // InitializeCam1();
 
             resetzoomfactorbtn = UIobj.transform.Find("VRFSCamPanel/SettingsPage1/resetzoomfactorbtn").GetComponent<UnityEngine.UI.Button>();
 
@@ -630,7 +644,7 @@ namespace VRFSCam
 
             // Behold the Initialization of Buttons...
 
-            // CreateWindowWithCam1();
+          //   CreateWindowWithCam1();
 
             resetzoomfactorbtn.onClick.AddListener(() =>
             {
@@ -789,7 +803,7 @@ namespace VRFSCam
 
                 _textObject = new GameObject("SebyText");
                 TextMeshPro = _textObject.AddComponent<TextMeshProUGUI>();
-                TextMeshPro.text = "";
+                TextMeshPro.text = "VRFSCam+";
                 TextMeshPro.fontSize = 36;
                 TextMeshPro.color = new Color(1f, 1f, 1f, 0.2f);
                 TextMeshPro.alignment = TextAlignmentOptions.BottomLeft;
@@ -924,7 +938,7 @@ namespace VRFSCam
 
                 HandleCameraControls();
                 HandleMainModeToggle();
-               //  HandleCam1();
+               // HandleCam1();
 
                 // Only attempt Discord update if it's available
                 if (_discordAvailable)
@@ -1257,7 +1271,7 @@ private void HandleCam1()
 
                 activecam1.targetTexture = renderTexturecam1;
 
-                Texture2Dcam1 = UniverseLib.Runtime.TextureHelper.NewTexture2D(renderTexturecam1.width, renderTexturecam1.height, TextureFormat.RGB24, false);
+                Texture2Dcam1 = new Texture2D(renderTexturecam1.width, renderTexturecam1.height, TextureFormat.RGB24, false);
 
                 // --- Set camera properties for best performance ---
                 activecam1.allowMSAA = false; // Disable multi-sample anti-aliasing
@@ -1405,7 +1419,58 @@ private void HandleCam1()
 
         #endregion Windows Rendering System
 
+        #region Intro Coroutines
 
+
+        private void StartSceneSequence()
+        {
+            MelonCoroutines.Start(SequenceCoroutine());
+        }
+
+        private IEnumerator SequenceCoroutine()
+        {
+            var paths = introscene.GetAllScenePaths();
+            if (paths.Length == 0)
+            {
+                MelonLogger.Error("No scenes found in scene bundle.");
+                yield break;
+            }
+            string sceneName = "Intro";
+            MelonLogger.Msg($"Loading {sceneName}..");
+            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+
+            // 4) Find/assign your VideoPlayer’s clip from the assets bundle, then wait for it to finish
+            var vp = UnityEngine.Object.FindObjectOfType<VideoPlayer>();
+            if (vp != null)
+            {
+                if (vp.clip == null)
+                {
+                    var clips = introassets.LoadAllAssets<VideoClip>();
+                    if (clips.Length > 0)
+                        vp.clip = clips[0];
+                }
+
+                vp.Play();
+                MelonLogger.Msg("Waiting for intro to finish...");
+                double waitTime = vp.clip != null ? vp.clip.length : 2.0;
+                yield return new WaitForSeconds((float)waitTime);
+            }
+            else
+            {
+                MelonLogger.Warning("No VideoPlayer found in scene.");
+            }
+
+            // 5) Finally, load your next scene (from Build Settings)
+            MelonLogger.Msg($"Loading game...");
+            yield return SceneManager.LoadSceneAsync(NextSceneName, LoadSceneMode.Single);
+
+            // Cleanup
+            introscene.Unload(false);
+            introassets.Unload(false);
+            MelonLogger.Msg("Sequence complete.");
+        }
+    
+        #endregion
 
         #region Helper Methods
         // Helper to log assembly errors only once

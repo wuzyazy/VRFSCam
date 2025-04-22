@@ -432,6 +432,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Compile Include="AssetBundles.Designer.cs">
+		  <DesignTime>True</DesignTime>
+		  <AutoGen>True</AutoGen>
+		  <DependentUpon>AssetBundles.resx</DependentUpon>
+		</Compile>
 		<Compile Include="Core.cs" />
 		<Compile Include="HarmonyPatches.cs" />
 	</ItemGroup>
@@ -443,6 +448,13 @@
 	  <PackageReference Include="Il2CppInterop.Common" Version="1.4.5" />
 	  <PackageReference Include="Il2CppInterop.Runtime" Version="1.4.5" />
 	  <PackageReference Include="UniverseLib.IL2CPP.Interop.ML" Version="1.5.4.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="AssetBundles.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AssetBundles.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
