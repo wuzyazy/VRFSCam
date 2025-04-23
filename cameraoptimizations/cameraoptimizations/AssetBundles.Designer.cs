@@ -73,16 +73,6 @@ namespace VRFSCam {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] introscene {
-            get {
-                object obj = ResourceManager.GetObject("introscene", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
         internal static byte[] vrfscam {
             get {
                 object obj = ResourceManager.GetObject("vrfscam", resourceCulture);

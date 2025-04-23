@@ -121,9 +121,6 @@
   <data name="introassets" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\introassets.asset;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="introscene" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\introscene.asset;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="vrfscam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\vrfscam.asset;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>

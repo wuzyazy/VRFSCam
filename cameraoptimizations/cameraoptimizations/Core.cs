@@ -1,4 +1,4 @@
-﻿using DiscordRPC;
+using DiscordRPC;
 using DiscordRPC.Logging;
 using HarmonyLib;
 using Il2Cpp;
@@ -24,6 +24,7 @@ using Button = UnityEngine.UI.Button;
 using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
 using UnityEngine.Video;
+using System.Reflection.Metadata;
 
 [assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.5", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
@@ -36,7 +37,6 @@ namespace VRFSCam
         // ─── CONFIG ─────────────────────────────────────────────────────────────
         private const string NextSceneName = "SB"; // Must be in Build Settings
         private UnityEngine.AssetBundle introassets;
-        private UnityEngine.AssetBundle introscene;
         // ────────────────────────────────────────────────────────────────────────
         #endregion
 
@@ -281,7 +281,7 @@ namespace VRFSCam
         {
             LoggerInstance.Msg($"VRFSCam+ {Version} by Seby");
             introassets = UnityEngine.AssetBundle.LoadFromMemory(VRFSCam.AssetBundles.introassets);
-            introscene = UnityEngine.AssetBundle.LoadFromMemory(VRFSCam.AssetBundles.introscene);
+            
             
             try
             {
@@ -1422,6 +1422,9 @@ private void HandleCam1()
         #region Intro Coroutines
 
 
+        private List<Canvas> _disabledCanvases;
+        private List<GameObject> _disabledMainCameraObjects;
+
         private void StartSceneSequence()
         {
             MelonCoroutines.Start(SequenceCoroutine());
@@ -1429,43 +1432,96 @@ private void HandleCam1()
 
         private IEnumerator SequenceCoroutine()
         {
-            var paths = introscene.GetAllScenePaths();
-            if (paths.Length == 0)
+
+            if (introassets == null)
             {
-                MelonLogger.Error("No scenes found in scene bundle.");
+                MelonLogger.Error("introassets assetbundle is null");
                 yield break;
             }
+
+
             string sceneName = "Intro";
-            MelonLogger.Msg($"Loading {sceneName}..");
-            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-
-            // 4) Find/assign your VideoPlayer’s clip from the assets bundle, then wait for it to finish
-            var vp = UnityEngine.Object.FindObjectOfType<VideoPlayer>();
-            if (vp != null)
+            LoggerInstance.Msg($"Loading Intro...");
+            if (Camera.main == null)
             {
-                if (vp.clip == null)
+                MelonLogger.Error("Camera.main is null");
+                yield break;
+            }
+
+            // 1. Disable all canvases and all GameObjects named "Main Camera"
+            _disabledCanvases = new List<Canvas>();
+            _disabledMainCameraObjects = new List<GameObject>();
+            foreach (var canvas in GameObject.FindObjectsOfType<Canvas>())
+            {
+                if (canvas.isActiveAndEnabled)
                 {
-                    var clips = introassets.LoadAllAssets<VideoClip>();
-                    if (clips.Length > 0)
-                        vp.clip = clips[0];
+                    canvas.gameObject.SetActive(false);
+                    _disabledCanvases.Add(canvas);
                 }
-
-                vp.Play();
-                MelonLogger.Msg("Waiting for intro to finish...");
-                double waitTime = vp.clip != null ? vp.clip.length : 2.0;
-                yield return new WaitForSeconds((float)waitTime);
             }
-            else
+            foreach (var go in GameObject.FindObjectsOfType<GameObject>())
             {
-                MelonLogger.Warning("No VideoPlayer found in scene.");
+                if (go.activeInHierarchy && go.name == "Main Camera")
+                {
+                    go.SetActive(false);
+                    _disabledMainCameraObjects.Add(go);
+                }
             }
 
-            // 5) Finally, load your next scene (from Build Settings)
-            MelonLogger.Msg($"Loading game...");
-            yield return SceneManager.LoadSceneAsync(NextSceneName, LoadSceneMode.Single);
+            Camera.main.gameObject.SetActive(false);
+            GameObject prefab = introassets.LoadAsset<GameObject>("Canvas");
+            if (prefab == null)
+            {
+                MelonLogger.Error("Intro prefab not found in assetbundle");
+                yield break;
+            }
+            var introUI = GameObject.Instantiate(prefab) as GameObject;
+            if (introUI == null)
+            {
+                MelonLogger.Error("Failed to instantiate intro prefab");
+                yield break;
+            }
+            yield return null; // Give Unity a frame to initialize components
+
+            MelonLogger.Msg($"Loading {sceneName}..");
+
+            var vp = introUI.GetComponentInChildren<VideoPlayer>(true);
+            if (vp == null)
+            {
+                MelonLogger.Error("No VideoPlayer found in intro UI prefab");
+                yield break;
+            }
+            if (introassets == null)
+            {
+                MelonLogger.Error("introassets is null when loading VideoClips");
+                yield break;
+            }
+
+            vp.Play();
+            MelonLogger.Msg("Waiting for intro to finish...");
+            double waitTime = (vp.clip != null) ? vp.clip.length : 2.0;
+            if (waitTime <= 0)
+            {
+                MelonLogger.Warning("VideoPlayer clip length is zero or negative, defaulting to 2.0 seconds");
+                waitTime = 2.0;
+            }
+            yield return new WaitForSeconds((float)waitTime);
+
+            // 2. Re-enable all previously disabled canvases and cameras
+            foreach (var canvas in _disabledCanvases)
+            {
+                if (canvas != null)
+                    canvas.gameObject.SetActive(true);
+            }
+            foreach (var go in _disabledMainCameraObjects)
+            {
+                if (go != null)
+                    go.SetActive(true);
+            }
+     
 
             // Cleanup
-            introscene.Unload(false);
+           
             introassets.Unload(false);
             MelonLogger.Msg("Sequence complete.");
         }
