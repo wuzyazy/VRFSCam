@@ -25,6 +25,7 @@ using UnityEngine.EventSystems;
 using System.Runtime.InteropServices;
 using UnityEngine.Video;
 using System.Reflection.Metadata;
+using MelonLoader.Utils;
 
 [assembly: MelonInfo(typeof(VRFSCam.Core), "VRFSCam+", "0.0.5", "seby", null)]
 [assembly: MelonGame("VRFS", "Camera")]
@@ -37,119 +38,16 @@ namespace VRFSCam
         // ─── CONFIG ─────────────────────────────────────────────────────────────
         private const string NextSceneName = "SB"; // Must be in Build Settings
         private UnityEngine.AssetBundle introassets;
+        private UnityEngine.AssetBundle introscene;
         // ────────────────────────────────────────────────────────────────────────
         #endregion
 
-        #region Windows API
-        // Windows API imports for window management
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr CreateWindowEx(
-        uint dwExStyle,
-        [MarshalAs(UnmanagedType.LPStr)] string lpClassName,
-        [MarshalAs(UnmanagedType.LPStr)] string lpWindowName,
-        uint dwStyle,
-        int x,
-        int y,
-        int nWidth,
-        int nHeight,
-        IntPtr hWndParent,
-        IntPtr hMenu,
-        IntPtr hInstance,
-        IntPtr lpParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr DefWindowProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern bool DestroyWindow(IntPtr hWnd);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern IntPtr RegisterClass(ref WNDCLASS lpWndClass);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        private static extern short UnregisterClass([MarshalAs(UnmanagedType.LPStr)] string lpClassName, IntPtr hInstance);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WNDCLASS
-        {
-            public uint style;
-            public IntPtr lpfnWndProc;
-            public int cbClsExtra;
-            public int cbWndExtra;
-            public IntPtr hInstance;
-            public IntPtr hIcon;
-            public IntPtr hCursor;
-            public IntPtr hbrBackground;
-            [MarshalAs(UnmanagedType.LPStr)] public string lpszMenuName;
-            [MarshalAs(UnmanagedType.LPStr)] public string lpszClassName;
-        }
-
-        private IntPtr windowHandle = IntPtr.Zero;
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetDC(IntPtr hWnd);
-
-        [DllImport("user32.dll")]
-        private static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
-
-        [DllImport("gdi32.dll")]
-        private static extern IntPtr CreateCompatibleDC(IntPtr hDC);
-
-        [DllImport("gdi32.dll")]
-        private static extern bool DeleteDC(IntPtr hDC);
-
-        [DllImport("gdi32.dll")]
-        private static extern IntPtr CreateDIBSection(IntPtr hDC, ref BITMAPINFO bmi, uint usage, out IntPtr bits, IntPtr hSection, uint offset);
-
-        [DllImport("gdi32.dll")]
-        private static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
-
-        [DllImport("gdi32.dll")]
-        private static extern bool BitBlt(IntPtr hdcDest, int xDest, int yDest, int width, int height, IntPtr hdcSrc, int xSrc, int ySrc, uint rop);
-
-        private const uint SRCCOPY = 0x00CC0020;
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct BITMAPINFOHEADER
-        {
-            public uint biSize;
-            public int biWidth;
-            public int biHeight;
-            public ushort biPlanes;
-            public ushort biBitCount;
-            public uint biCompression;
-            public uint biSizeImage;
-            public int biXPelsPerMeter;
-            public int biYPelsPerMeter;
-            public uint biClrUsed;
-            public uint biClrImportant;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct BITMAPINFO
-        {
-            public BITMAPINFOHEADER bmiHeader;
-            public uint bmiColors;
-        }
-
-
-
-
-        private WndProcDelegate wndProcRef;
-
-        [DllImport("kernel32.dll")]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-
-        private bool windowCreated = false; // Flag to track window creation
-
-        #endregion Windows API
+        
 
         #region Constants
-        public const string Version = "0.0.5";
+        public const string Version = "0.0.6";
         private const string DiscordAppId = "1354484678748409966";
         private const string BallObjectPrefix = "BallSingle(Clone)";
-        private const string WINDOW_CLASS_NAME = "VRFSCam+WindowClass";
         #endregion
 
         #region Private Fields
@@ -281,8 +179,9 @@ namespace VRFSCam
         {
             LoggerInstance.Msg($"VRFSCam+ {Version} by Seby");
             introassets = UnityEngine.AssetBundle.LoadFromMemory(VRFSCam.AssetBundles.introassets);
-            
-            
+            introscene = UnityEngine.AssetBundle.LoadFromMemory(AssetBundles.introscene);
+
+
             try
             {
                 InitializeDiscordRPC();
@@ -336,6 +235,39 @@ namespace VRFSCam
             }
         }
 
+        private void LogAllArenaObjectDataInstances()
+        {
+
+            var found = Resources.FindObjectsOfTypeAll<Il2Cpp.ArenaObjectData>();
+            var list = new List<Il2Cpp.ArenaObjectData>(found);
+
+            if (list.Count == 0)
+            {
+                MelonLogger.Msg("No ArenaObjectData instances found in resources.");
+                return;
+            }
+
+            // Prepare lines for the file
+            List<string> lines = new List<string>();
+            foreach (var instance in list)
+            {
+                string name = instance._displayedName;
+                if (string.IsNullOrEmpty(name))
+                    name = instance.name;
+                string id = instance._id.ToString();
+                lines.Add($"{name} : {id}");
+            }
+
+            // Sort alphabetically by name
+            lines = lines.OrderBy(l => l).ToList();
+
+            // Write to file
+            string path = Path.Combine(MelonEnvironment.UserDataDirectory, "ArenaObjectDataList.txt");
+            File.WriteAllLines(path, lines);
+
+            MelonLogger.Msg($"Exported {lines.Count} ArenaObjectData entries to: {path}");
+        }
+        
         private void InitializeDiscordRPC()
         {
             try
@@ -682,6 +614,7 @@ namespace VRFSCam
 
             simplejerseybtn.onClick.AddListener(() =>
             {
+                /*
                 if (activetshirtSettingsChanger == null)
                 {
                     activetshirtSettingsChanger = GameObject.Find("TshirtSettingsChanger")?.GetComponent<TshirtSettingsChanger>();
@@ -696,6 +629,9 @@ namespace VRFSCam
                 activetshirtSettingsChanger.vgf = isSimpleJerseyActive;
                 simplejerseyActivatedText.text = isSimpleJerseyActive ? "DISABLE SIMPLE JERSEYS" : "ENABLE SIMPLE JERSEYS";
                 simplejerseybtn.GetComponent<Image>().color = isSimpleJerseyActive ? new Color(0.2f, 0.8f, 0.2f) : new Color(0.8f, 0.2f, 0.2f);
+                */
+
+                LogAllArenaObjectDataInstances();
             });
 
 
@@ -1035,98 +971,11 @@ namespace VRFSCam
                 LoggerInstance.Warning($"Error handling main mode toggle: {ex.Message}");
             }
         }
-private void EnsureCameraTextures()
-{
-    // Ensure renderTexturecam1 and Texture2Dcam1 are allocated and valid
-    if (renderTexturecam1 == null || renderTexturecam1.width != camWindowWidth || renderTexturecam1.height != camWindowHeight)
-    {
-        renderTexturecam1 = new RenderTexture(camWindowWidth, camWindowHeight, 16, RenderTextureFormat.ARGB32);
-        renderTexturecam1.Create();
-        if (_mainCamera != null)
-            _mainCamera.targetTexture = renderTexturecam1;
-    }
-    if (Texture2Dcam1 == null || Texture2Dcam1.width != camWindowWidth || Texture2Dcam1.height != camWindowHeight)
-    {
-        Texture2Dcam1 = new Texture2D(camWindowWidth, camWindowHeight, TextureFormat.RGB24, false);
-    }
-}
 
-private void HandleCam1()
-{
-    try
-    {
-        // Limit camera updates to 10 FPS
-        if (Time.realtimeSinceStartup - lastCamUpdateTime < CamUpdateIntervalSeconds)
-            return;
-        lastCamUpdateTime = Time.realtimeSinceStartup;
 
-        if (!windowCreated)
-        {
-            MelonLogger.Error("Window is not created yet.");
-            return;
-        }
 
-        EnsureCameraTextures(); // Robustly ensure textures exist every frame
 
-        if (Texture2Dcam1 == null)
-        {
-            MelonLogger.Error("Texture2Dcam1 is null!");
-            return;
-        }
-        if (windowHandle == IntPtr.Zero)
-        {
-            MelonLogger.Error("windowHandle is zero!");
-            return;
-        }
-        if (renderTexturecam1 == null)
-        {
-            MelonLogger.Error("renderTexturecam1 is null!");
-            return;
-        }
-
-        // Copy camera RenderTexture to Texture2Dcam1 each frame
-        RenderTexture prev = RenderTexture.active;
-        RenderTexture.active = renderTexturecam1;
-        Texture2Dcam1.ReadPixels(new UnityEngine.Rect(0, 0, camWindowWidth, camWindowHeight), 0, 0);
-        Texture2Dcam1.Apply();
-        RenderTexture.active = prev;
-
-        byte[] imageBytes = Texture2Dcam1.GetRawTextureData();
-        // Swap R and B channels for GDI (expects BGR, Unity gives RGB)
-        for (int i = 0; i < imageBytes.Length; i += 3)
-        {
-            byte temp = imageBytes[i];         // R
-            imageBytes[i] = imageBytes[i + 2]; // B
-            imageBytes[i + 2] = temp;          // R
-        }
-
-        if (imageBytes != null)
-        {
-            RenderToWindow(imageBytes, camWindowWidth, camWindowHeight);
-        }
-    }
-    catch (Exception ex)
-    {
-        LoggerInstance.Warning($"Error handling Cam1: {ex.Message}");
-    }
-}
-
-        private void CreateWindowWithCam1()
-        {
-            MelonLogger.Msg("Creating window");
-            windowHandle = CreateWindow();
-            MelonLogger.Msg("created window handle");
-            if (windowHandle != IntPtr.Zero)
-            {
-                windowCreated = true;
-
-                MelonLogger.Msg("Window created successfully!");
-            }
-            else
-            {
-                MelonLogger.Error("Failed to create window.");
-            }
-        }
+       
         private void ToggleMenu()
         {
             if (UIobj == null) return;
@@ -1252,178 +1101,14 @@ private void HandleCam1()
         }
         #endregion
 
-        #region Multiple-Camera Support
+        
 
-        private void InitializeCam1()
-        {
-            try
-            {
-                GameObject camera = new GameObject("Cam1GoalPostRed");
-                UnityEngine.Object.DontDestroyOnLoad(camera);
-                camera.AddComponent<Camera>();
-                activecam1 = camera.GetComponent<Camera>();
-                camera.tag = "Untagged";
-                camera.transform.SetPositionAndRotation(new Vector3(100.3993f, 2.5074f, -3.5727f), Quaternion.Euler(29.6446f, 312f, 180f));
-                camera.transform.localScale = Vector3.one;
-                activecam1.fieldOfView = 80f;
-                renderTexturecam1 = new RenderTexture(camWindowWidth, camWindowHeight, 16);
-                renderTexturecam1.Create();
-
-                activecam1.targetTexture = renderTexturecam1;
-
-                Texture2Dcam1 = new Texture2D(renderTexturecam1.width, renderTexturecam1.height, TextureFormat.RGB24, false);
-
-                // --- Set camera properties for best performance ---
-                activecam1.allowMSAA = false; // Disable multi-sample anti-aliasing
-                activecam1.allowHDR = false; // Disable HDR rendering
-                activecam1.useOcclusionCulling = false; // Disable occlusion culling
-                activecam1.depthTextureMode = DepthTextureMode.None; // No depth/normals textures
-                activecam1.stereoTargetEye = StereoTargetEyeMask.None; // Disable VR stereo rendering
-                activecam1.clearFlags = CameraClearFlags.SolidColor; // Use solid color for fastest clear
-                activecam1.backgroundColor = Color.black; // Black background
-                
-                // Optionally, set very low near/far clip plane range if possible
-                activecam1.nearClipPlane = 0.3f;
-                activecam1.farClipPlane = 1000f;
-                // Optionally, set rendering path to Forward for best compatibility/performance
-                activecam1.renderingPath = RenderingPath.Forward;
-                // --- End camera property optimization ---
-
-            }
-            catch (Exception ex)
-            {
-                LoggerInstance.Warning($"Error initializing camera: {ex.Message}");
-            }
-        }
-
-        public byte[] GetCameraImage()
-        {
-            RenderTexture.active = renderTexturecam1;
-            activecam1.Render();
-            Texture2Dcam1.ReadPixels(new Rect(0, 0, renderTexturecam1.width, renderTexturecam1.height), 0, 0);
-            Texture2Dcam1.Apply();
-            RenderTexture.active = null;
-            byte[] imageBytes = Texture2Dcam1.GetRawTextureData();
-            return imageBytes;
-
-        }
-
-
-
-
-
-        #endregion Multiple-Camera Support
-
-        #region Windows Rendering System
-
-
-        private void CreateOSWindow(string title, int width, int height)
-        {
-            WNDCLASS windowClass = new WNDCLASS
-            {
-                style = 0,
-                lpfnWndProc = Marshal.GetFunctionPointerForDelegate(new WndProcDelegate(DefWindowProc)),
-                cbClsExtra = 0,
-                cbWndExtra = 0,
-                hInstance = IntPtr.Zero,
-                hIcon = IntPtr.Zero,
-                hCursor = IntPtr.Zero,
-                hbrBackground = IntPtr.Zero,
-                lpszMenuName = null,
-                lpszClassName = WINDOW_CLASS_NAME
-            };
-
-            RegisterClass(ref windowClass);
-
-            windowHandle = CreateWindowEx(
-             0,
-             WINDOW_CLASS_NAME,
-             title,
-             0x10CF0000, // WS_OVERLAPPEDWINDOW | WS_VISIBLE
-             100, 100,
-             width, height,
-             IntPtr.Zero,
-             IntPtr.Zero,
-             IntPtr.Zero,
-             IntPtr.Zero);
-
-            if (windowHandle == IntPtr.Zero)
-            {
-                MelonLogger.Error("Failed to create window!");
-            }
-            else
-            {
-                MelonLogger.Error("Window created successfully.");
-            }
-
-            
-        }
-
-
-        private void DestroyOSWindow()
-        {
-            if (windowHandle != IntPtr.Zero)
-            {
-                DestroyWindow(windowHandle);
-                UnregisterClass(WINDOW_CLASS_NAME, IntPtr.Zero);
-                windowHandle = IntPtr.Zero;
-                Debug.Log("Window destroyed successfully.");
-            }
-            else
-            {
-                Debug.LogError("No window to destroy.");
-            }
-        }
-
-        private void RenderToWindow(byte[] imageData, int width, int height)
-        {
-            IntPtr hDC = GetDC(windowHandle);
-            if (hDC == IntPtr.Zero)
-            {
-                MelonLogger.Error("Failed to get device context!");
-                return;
-            }
-
-            BITMAPINFO bmi = new BITMAPINFO
-            {
-                bmiHeader = new BITMAPINFOHEADER
-                {
-                    biSize = (uint)Marshal.SizeOf(typeof(BITMAPINFOHEADER)),
-                    biWidth = width,
-                    biHeight = -height, // Negative height for top-down bitmap
-                    biPlanes = 1,
-                    biBitCount = 24,
-                    biCompression = 0,
-                    biSizeImage = 0,
-                    biXPelsPerMeter = 0,
-                    biYPelsPerMeter = 0,
-                    biClrUsed = 0,
-                    biClrImportant = 0
-                },
-                bmiColors = 0
-            };
-
-            IntPtr bits;
-            IntPtr hBitmap = CreateDIBSection(hDC, ref bmi, 0, out bits, IntPtr.Zero, 0);
-            Marshal.Copy(imageData, 0, bits, imageData.Length);
-
-            IntPtr memoryDC = CreateCompatibleDC(hDC);
-            SelectObject(memoryDC, hBitmap);
-
-            BitBlt(hDC, 0, 0, width, height, memoryDC, 0, 0, SRCCOPY);
-
-            DeleteDC(memoryDC);
-            ReleaseDC(windowHandle, hDC);
-        }
-
-
-        #endregion Windows Rendering System
+        
 
         #region Intro Coroutines
 
 
-        private List<Canvas> _disabledCanvases;
-        private List<GameObject> _disabledMainCameraObjects;
+
 
         private void StartSceneSequence()
         {
@@ -1433,59 +1118,23 @@ private void HandleCam1()
         private IEnumerator SequenceCoroutine()
         {
 
-            if (introassets == null)
-            {
-                MelonLogger.Error("introassets assetbundle is null");
-                yield break;
-            }
+
 
 
             string sceneName = "Intro";
             LoggerInstance.Msg($"Loading Intro...");
-            if (Camera.main == null)
-            {
-                MelonLogger.Error("Camera.main is null");
-                yield break;
-            }
 
-            // 1. Disable all canvases and all GameObjects named "Main Camera"
-            _disabledCanvases = new List<Canvas>();
-            _disabledMainCameraObjects = new List<GameObject>();
-            foreach (var canvas in GameObject.FindObjectsOfType<Canvas>())
-            {
-                if (canvas.isActiveAndEnabled)
-                {
-                    canvas.gameObject.SetActive(false);
-                    _disabledCanvases.Add(canvas);
-                }
-            }
-            foreach (var go in GameObject.FindObjectsOfType<GameObject>())
-            {
-                if (go.activeInHierarchy && go.name == "Main Camera")
-                {
-                    go.SetActive(false);
-                    _disabledMainCameraObjects.Add(go);
-                }
-            }
+            SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
-            Camera.main.gameObject.SetActive(false);
-            GameObject prefab = introassets.LoadAsset<GameObject>("Canvas");
-            if (prefab == null)
-            {
-                MelonLogger.Error("Intro prefab not found in assetbundle");
-                yield break;
-            }
-            var introUI = GameObject.Instantiate(prefab) as GameObject;
-            if (introUI == null)
-            {
-                MelonLogger.Error("Failed to instantiate intro prefab");
-                yield break;
-            }
-            yield return null; // Give Unity a frame to initialize components
+            yield return null;
+
+
+
+
 
             MelonLogger.Msg($"Loading {sceneName}..");
 
-            var vp = introUI.GetComponentInChildren<VideoPlayer>(true);
+            var vp = UnityEngine.Object.FindObjectOfType<VideoPlayer>();
             if (vp == null)
             {
                 MelonLogger.Error("No VideoPlayer found in intro UI prefab");
@@ -1499,30 +1148,21 @@ private void HandleCam1()
 
             vp.Play();
             MelonLogger.Msg("Waiting for intro to finish...");
-            double waitTime = (vp.clip != null) ? vp.clip.length : 2.0;
+            double waitTime = (vp.clip != null) ? vp.clip.length : 2.0; 
             if (waitTime <= 0)
             {
                 MelonLogger.Warning("VideoPlayer clip length is zero or negative, defaulting to 2.0 seconds");
                 waitTime = 2.0;
             }
             yield return new WaitForSeconds((float)waitTime);
+           
+            SceneManager.LoadScene("StartUp", LoadSceneMode.Single);
 
-            // 2. Re-enable all previously disabled canvases and cameras
-            foreach (var canvas in _disabledCanvases)
-            {
-                if (canvas != null)
-                    canvas.gameObject.SetActive(true);
-            }
-            foreach (var go in _disabledMainCameraObjects)
-            {
-                if (go != null)
-                    go.SetActive(true);
-            }
-     
 
             // Cleanup
-           
+
             introassets.Unload(false);
+            introscene.Unload(false);
             MelonLogger.Msg("Sequence complete.");
         }
     
